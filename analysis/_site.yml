@@ -1,0 +1,17 @@
+name: "ulceration_paper_workflowr"
+output_dir: ../docs
+navbar:
+  title: "ulceration_paper_workflowr"
+  left:
+  - text: Home
+    href: index.html
+  - text: About
+    href: about.html
+  - text: License
+    href: license.html
+output:
+  workflowr::wflow_html:
+    toc: yes
+    toc_float: yes
+    theme: cosmo
+    highlight: textmate
