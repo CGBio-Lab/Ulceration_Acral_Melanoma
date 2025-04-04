@@ -1,16 +1,17 @@
 ---
-title: "Ulceration Figure1"
+title: "Figure 1 - Clinical"
 author: "Estef Vazquez"
 date: "`r Sys.Date()`"
 output: workflowr::wflow_html
 editor_options:
+  
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 
-# Figure 1. Clinical characteristics of acral melanoma patients according to ulceration status
+# Clinical characteristics of acral melanoma patients according to ulceration status
 
 The following code creates visualizations comparing clinical features between ulcerated and non-ulcerated acral melanomas. It generates box plots for age and mitotic index, violin plot for Breslow depth, stacked bar plots for stage and recurrence, and a combined panel.
 
@@ -94,7 +95,6 @@ ulc_age_plot
 ### 1B - Breslow Depth
 
 ```{r, fig.width=12, fig.height=10}
-
 # Violin plot ulceration vs breslow depth 
 ulc_bres_plot <- ggplot(metadata, 
             aes(x = factor(ulceration), 
@@ -140,14 +140,11 @@ ulc_bres_plot <- ggplot(metadata,
 ulc_bres_plot
 
 #ggsave("ulceration_breslow.pdf", height=8, width=7, dpi=400)
-
-
 ```
 
 ### 1C - Mitotic Index
 
 ```{r, fig.width=12, fig.height=10}
-
 # Boxplot ulceration vs Mitotic Index
 ulc_mit_plot <- ggplot(data = metadata,
        mapping = aes(x = factor(ulceration), y = mitotic_index, 
@@ -351,9 +348,7 @@ final_grid_with_labels <- cowplot::ggdraw(final_grid) +
 final_grid_with_labels
 
 
-# Save plot
-ggsave("ulceration_combined_panel.pdf", final_grid_with_labels, 
-       height = 10, width = 12, dpi = 400)
+#ggsave("ulceration_combined_panel.pdf", final_grid_with_labels, height = 10, width = 12, dpi = 400)
 ```
 
 ```{r}

@@ -1,5 +1,5 @@
 ---
-title: "Ulceration Figure - 2 TF activity"
+title: "Figure 2 - TF activity"
 author: "Estef Vazquez"
 date: "`r Sys.Date()`"
 output: 
@@ -62,7 +62,6 @@ logcounts <- log2(normalized_counts + 1)
 
 ```{r}
 # Preparing expression mt
-# Convert to df with gene identifiers
 logcounts_df <- as.data.frame(logcounts) %>%
   rownames_to_column(var = "gene")
 
@@ -92,8 +91,7 @@ counts_input <- counts_input[, -1]
 ```
 
 ```{r load-tf-network}
-#Load TF network
-# Load CollecTRI network
+# Loading TF network
 net <- readRDS(here("data", "collectri_network_omnipath.rds"))
 #net = get_collectri(organism='human', split_complexes=FALSE)
 
@@ -102,7 +100,7 @@ gene_in_counts <- rownames(counts_input)
 gene_in_network <- unique(net$target)
 overlap <- intersect(gene_in_counts, gene_in_network)
 
-# Check how many TFs have at least 5 targets
+# How many TFs have at least 5 targets
 tf_target_counts <- table(net$source[net$target %in% gene_in_counts])
 tf_sufficient <- names(tf_target_counts[tf_target_counts >= 5])
 ```
@@ -162,7 +160,7 @@ TF_act_mat_wide <- TF_act_mat %>%
   tibble::column_to_rownames('condition') %>%
   as.matrix()
 
-# Standardize data (convert to z-scores)
+# Standardize (convert to z-scores)
 final_tfs <- scale(TF_act_mat_wide)
 final_tfs <- as.data.frame(final_tfs)
 
@@ -178,11 +176,9 @@ tf_info <- significant_TFs %>%
 
 ## 2E - TF activity Heatmap 
 
-This heatmap shows the activity of the top `r n_tfs` transcription factors across samples, grouped by ulceration status.
+Analysis of the complete expression matrix. Heatmap shows the activity of the top `r n_tfs` transcription factors across samples, grouped by ulceration status.
 
 ```{r, fig.width=12, fig.height=12, message=FALSE}
-# Complete matrix analysis
-
 # Create annotation df for samples
 annotation_row <- metadata %>%
   select(sample_id, ulceration) %>%
@@ -208,7 +204,7 @@ colors.use <- grDevices::colorRampPalette(colors = colors)(100)
 my_breaks <- c(seq(-2, 0, length.out = ceiling(100 / 2) + 1),
                seq(0.05, 2, length.out = floor(100 / 2)))
 
-# Define colors for annotation
+# Colors annotation
 ann_colors <- list(
   ulceration = c(
     "Ulcerated" = "#E8CC03",  
@@ -216,7 +212,6 @@ ann_colors <- list(
   )
 )
 
-# Check if any column contains non-numeric values
 tf_heatmap <- pheatmap::pheatmap(
   mat = final_tfs_mat,
   color = colors.use,
@@ -290,7 +285,7 @@ significant_TFs_adjusted <- TF_act_ulc %>%
   mutate(padj = p.adjust(p_value, method = "BH")) %>%
   filter(padj < 0.05)
 
-# Save significant TFs 
+# Save 
 # write_csv(significant_TFs_adjusted, "significant_TFs_ulceration.csv")
 
 # Add ranking
@@ -318,12 +313,11 @@ TF_visualization <- TF_act_ulc %>%
 
 
 ```{r, warning=FALSE, message=FALSE}
-#colors <- rev(RColorBrewer::brewer.pal(n = 11, name = "RdBu")[c(2, 10)])
-# Barplot of top differential TFs 
+# Visualizing top TFs 
 p1 <- ggplot(TF_visualization, aes(x = reorder(source, score), y = score)) + 
-  geom_bar(aes(fill = score > 0), stat = "identity") +  # Discrete coloring based on sign
+  geom_bar(aes(fill = score > 0), stat = "identity") +  
   scale_fill_manual(
-    values = c("#0571b0", "#ca0020"),  # Blue for FALSE (negative), Red for TRUE (positive)
+    values = c("#0571b0", "#ca0020"),  
     labels = c("Repressed", "Activated"),
     name = "Activity"
   ) + 
@@ -360,7 +354,7 @@ df <- net %>%
 inter <- sort(intersect(rownames(deg), rownames(df)))
 df <- df[inter, ]
 
-# Rename DEG columns 
+# Rename columns 
 deg_formatted <- deg %>%
   dplyr::select(log2FoldChange, stat, padj) %>%
   dplyr::rename(
@@ -372,17 +366,16 @@ deg_formatted <- deg %>%
 # Add DE statistics to df
 df[, c('logfc', 't_value', 'pval')] <- deg_formatted[inter, c('logfc', 't_value', 'pval')]
 
-# Color based on consistency between mode of regulation and observed changes (t-value)
+# Color based on consistency between mode of regulation and observed changes
 df <- df %>%
   dplyr::mutate(color = dplyr::if_else(mor > 0 & t_value > 0, '1', color)) %>%
   dplyr::mutate(color = dplyr::if_else(mor > 0 & t_value < 0, '2', color)) %>%
   dplyr::mutate(color = dplyr::if_else(mor < 0 & t_value > 0, '2', color)) %>%
   dplyr::mutate(color = dplyr::if_else(mor < 0 & t_value < 0, '1', color))
 
-# Define color scheme
+# Defining color 
 colors <- rev(RColorBrewer::brewer.pal(n = 11, name = "RdBu")[c(2, 10)])
 
-# Create plot
 p2 <- ggplot2::ggplot(
   data = df, 
   mapping = ggplot2::aes(

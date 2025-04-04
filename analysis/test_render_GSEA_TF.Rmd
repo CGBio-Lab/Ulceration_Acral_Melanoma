@@ -1,5 +1,5 @@
 ---
-title: "Ulceration Figure 2 GSEA"
+title: "Figure 2 - GSEA"
 author: "Estef Vazquez"
 date: "`r Sys.Date()`"
 output: 
@@ -24,7 +24,7 @@ ulcer_colors <- c("#bb0c00", "#00AFBB")
 options(enrichplot.colours = ulcer_colors)
 ```
 
-This script performs Gene Set Enrichment Analysis using GO terms and PROGENy to identify pathway activity in ulcerated vs non-ulcerated acral melanoma samples.
+We perform Gene Set Enrichment Analysis (GSEA) using GO terms and PROGENy to identify pathway activity in ulcerated vs non-ulcerated acral melanoma samples.
 
 ```{r}
 library(tidyverse)  
@@ -38,7 +38,7 @@ library(decoupleR)
 library(here)
 ```
 
-## GSEA
+## 2C - 2D - GSEA
 
 ```{r, fig.width=10, fig.height=10, message=FALSE}
 # Data loading
@@ -64,7 +64,7 @@ names(geneList_FC) <- as.character(ranked_idmatch[,1]) # Use ENSEMBL IDs as name
 # Sort gene list in decreasing order by LFC
 geneList_FC_ordered <- sort(geneList_FC, decreasing = TRUE)
 
-# ---GSEA Analysis ---
+# ---GSEA ---
 # Perform Gene Set Enrichment Analysis using GO Biological Process 
 gsea_BP <- gseGO(geneList = geneList_FC_ordered, 
              ont ="BP", 
@@ -77,7 +77,6 @@ gsea_BP <- gseGO(geneList = geneList_FC_ordered,
              pAdjustMethod = "BH",
              eps = 0) 
 
-# Convert to data frame 
 go_BP_df <- (as.data.frame(gsea_BP))
 
 # saveRDS(gsea_BP, "results/GSEA_BP_results.rds")
@@ -148,10 +147,6 @@ print(enrichment_plots)
 ```{r, fig.width=13, fig.height=10, message=FALSE}
 # Data Preparation
 
-# Load ranked gene list 
-#ranked_GSEA <- readRDS("DE_results_ulceration_ranked.rds")
-#ranked_GSEA <- rownames_to_column(ranked_GSEA, var = "ENSEMBL_GENE_ID")
-
 # Extract t-statistic 
 gene_stats <- ranked_idmatch[, 5] 
 names(gene_stats) <- ranked_idmatch$external_gene_name
@@ -186,7 +181,6 @@ progeny_df <- progeny_df %>%
 
 # --- Visualization ---
 
-# Plot results
 progeny_plot <- ggplot(progeny_df, aes(x = reorder(pathway, normalized_score), 
                                        y = normalized_score, 
                                        fill = normalized_score > 0)) +
