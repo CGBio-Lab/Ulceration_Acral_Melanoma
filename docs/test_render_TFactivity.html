@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Estef Vazquez" />
+
+<meta name="date" content="2025-04-03" />
+
+<title>Ulceration Figure - 2 TF activity</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">ulceration_paper_workflowr</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Ulceration Figure - 2 TF activity</h1>
+<h4 class="author">Estef Vazquez</h4>
+<h4 class="date">2025-04-03</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2025-04-03
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>Ulceration_paper_github/</code>
+<span class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20250330code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20250330)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20250330code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20250330)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongca58350">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong> ca58350
+</a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongca58350"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version ca58350.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  DE_results_ulceration_ranked.rds
+    Untracked:  data/DE_results.rds
+    Untracked:  data/DE_results_ranked.rds
+    Untracked:  data/DE_results_ulceration_rankednew.rds
+    Untracked:  data/annotation.rds
+    Untracked:  data/clinical_am_prim.csv
+    Untracked:  data/collectri_network_omnipath.rds
+    Untracked:  data/normalized_counts.rds
+    Untracked:  data/rawcounts_am.rds
+    Untracked:  omnipathr-log/
+    Untracked:  ulceration_combined_panel.pdf
+    Untracked:  ulceration_mitotic.pdf
+    Untracked:  volcanoplot.pdf
+
+Unstaged changes:
+    Deleted:    analysis/teeth.Rmd
+    Deleted:    data/teeth.csv
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+These are the previous versions of the repository in which changes were
+made to the R Markdown
+(<code>analysis/test_render_TFactivity.Rmd</code>) and HTML
+(<code>docs/test_render_TFactivity.html</code>) files. If you’ve
+configured a remote Git repository (see <code>?wflow_git_remote</code>),
+click on the hyperlinks in the table below to view the files as they
+were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+ca58350
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-03
+</td>
+<td>
+Publish transcriptomic analyses
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This analysis uses decoupleR (Badia et al., 2022) to analyze
+transcription factor (TF) activity differences between ulcerated and
+non-ulcerated acral melanoma samples.</p>
+<pre class="r"><code># Load required packages
+library(tidyverse)
+library(decoupleR)
+library(OmnipathR)
+library(pheatmap)
+library(ggrepel)
+library(RColorBrewer)
+library(here)</code></pre>
+<pre class="r"><code># Data pre-processing
+cts &lt;- readRDS(here(&quot;data&quot;, &quot;rawcounts_am.rds&quot;))
+cts &lt;- as.matrix(cts)
+
+# Define filtering
+min_count_threshold &lt;- 15
+
+# Filter genes with insufficient counts
+total_counts_per_gene &lt;- rowSums(cts)
+filtered_genes &lt;- cts[total_counts_per_gene &gt;= min_count_threshold, ]
+
+# Check that number of samples matches metadata
+stopifnot(ncol(filtered_genes) == nrow(metadata))
+
+# Load normalized counts and convert to log2 scale
+normalized_counts &lt;- readRDS(here(&quot;data&quot;, &quot;normalized_counts.rds&quot;))
+logcounts &lt;- log2(normalized_counts + 1)</code></pre>
+<pre class="r"><code># Preparing expression mt
+# Convert to df with gene identifiers
+logcounts_df &lt;- as.data.frame(logcounts) %&gt;%
+  rownames_to_column(var = &quot;gene&quot;)
+
+# Replace NAs with zeros and format 
+counts_input &lt;- logcounts_df %&gt;% 
+  dplyr::mutate_if(~ any(is.na(.x)), ~ if_else(is.na(.x), 0, .x)) %&gt;% 
+  column_to_rownames(var = &quot;gene&quot;) %&gt;% 
+  as.matrix()
+
+# Convert to df for ID mapping
+counts_input &lt;- as.data.frame(counts_input) %&gt;%
+  rownames_to_column(var = &quot;ENSEMBL_GENE_ID&quot;)
+
+# Load gene annotation for ID mapping
+gene_ann &lt;- readRDS(here(&quot;data&quot;, &quot;annotation.rds&quot;))
+
+# Join and format
+counts_input &lt;- counts_input %&gt;%
+  inner_join(gene_ann, by = &quot;ENSEMBL_GENE_ID&quot;) %&gt;%
+  relocate(external_gene_name, .after = ENSEMBL_GENE_ID)
+
+# Set row names
+names &lt;- make.unique(counts_input$external_gene_name)
+rownames(counts_input) &lt;- names
+counts_input &lt;- counts_input[, -1] 
+counts_input &lt;- counts_input[, -1] </code></pre>
+<pre class="r"><code>#Load TF network
+# Load CollecTRI network
+net &lt;- readRDS(here(&quot;data&quot;, &quot;collectri_network_omnipath.rds&quot;))
+#net = get_collectri(organism=&#39;human&#39;, split_complexes=FALSE)
+
+# Check overlap between gene sets
+gene_in_counts &lt;- rownames(counts_input)
+gene_in_network &lt;- unique(net$target)
+overlap &lt;- intersect(gene_in_counts, gene_in_network)
+
+# Check how many TFs have at least 5 targets
+tf_target_counts &lt;- table(net$source[net$target %in% gene_in_counts])
+tf_sufficient &lt;- names(tf_target_counts[tf_target_counts &gt;= 5])</code></pre>
+<pre class="r"><code># Calculate TF Activity Using ULM
+# Make sure dplyr is loaded
+library(dplyr)
+
+# Run univariate linear model on expression matrix
+TF_act_mat &lt;- decoupleR::run_ulm(mat = counts_input, 
+                                  net = net, 
+                                  .source = &#39;source&#39;, 
+                                  .target = &#39;target&#39;,
+                                  .mor = &#39;mor&#39;, 
+                                  minsize = 5)
+
+
+# Add adjusted p-values
+TF_act_mat &lt;- TF_act_mat %&gt;%
+  group_by(source) %&gt;%
+  mutate(padj = p.adjust(p_value, method = &quot;BH&quot;))
+
+# Filter significant TFs and rank by score direction
+significant_TFs &lt;- TF_act_mat %&gt;%
+  filter(padj &lt; 0.05) %&gt;%  
+  group_by(source) %&gt;%
+  summarise(
+    mean_score = mean(score),
+    padj = dplyr::first(padj)  
+  ) %&gt;%
+  mutate(
+    rnk = NA,
+    msk = mean_score &gt; 0
+  )
+
+# Rank positive and negative scores separately
+significant_TFs$rnk[significant_TFs$msk] &lt;- rank(-significant_TFs$mean_score[significant_TFs$msk])
+significant_TFs$rnk[!significant_TFs$msk] &lt;- rank(-abs(significant_TFs$mean_score[!significant_TFs$msk]))
+
+# Select top TFs based on ranking
+n_tfs &lt;- 50
+top_tf &lt;- significant_TFs %&gt;%
+  arrange(rnk) %&gt;%
+  head(n_tfs) %&gt;%
+  pull(source)
+
+# Create matrix of TF activities
+TF_act_mat_wide &lt;- TF_act_mat %&gt;%
+  filter(source %in% top_tf) %&gt;%  
+  tidyr::pivot_wider(
+    id_cols = &#39;condition&#39;, 
+    names_from = &#39;source&#39;,
+    values_from = &#39;score&#39;
+  ) %&gt;%
+  tibble::column_to_rownames(&#39;condition&#39;) %&gt;%
+  as.matrix()
+
+# Standardize data (convert to z-scores)
+final_tfs &lt;- scale(TF_act_mat_wide)
+final_tfs &lt;- as.data.frame(final_tfs)
+
+# Make matrix
+final_tfs_mat &lt;- as.matrix(final_tfs)
+
+# Prepare summary table - add info about direction of effect and significance
+tf_info &lt;- significant_TFs %&gt;%
+  filter(source %in% top_tf) %&gt;%
+  arrange(rnk) %&gt;%
+  dplyr::select(source, mean_score, padj, rnk)</code></pre>
+</div>
+<div id="e---tf-activity-heatmap" class="section level2">
+<h2>2E - TF activity Heatmap</h2>
+<p>This heatmap shows the activity of the top 50 transcription factors
+across samples, grouped by ulceration status.</p>
+<pre class="r"><code># Complete matrix analysis
+
+# Create annotation df for samples
+annotation_row &lt;- metadata %&gt;%
+  select(sample_id, ulceration) %&gt;%
+  as.data.frame() %&gt;%
+  # Make sure sample_id values match rownames in final_tfs
+  filter(sample_id %in% rownames(final_tfs)) %&gt;%
+  column_to_rownames(&#39;sample_id&#39;) %&gt;%
+  mutate(ulceration = factor(ulceration,
+                            levels = c(&quot;1&quot;, &quot;0&quot;),
+                            labels = c(&quot;Ulcerated&quot;, &quot;Non-ulcerated&quot;)))
+
+
+# Verify annotation matches the data
+cat(&quot;Annotation dimensions:&quot;, dim(annotation_row)[1], &quot;samples x&quot;, dim(annotation_row)[2], &quot;features\n&quot;)</code></pre>
+<pre><code>Annotation dimensions: 59 samples x 1 features</code></pre>
+<pre class="r"><code>cat(&quot;All annotation samples are in the TF activity matrix:&quot;, all(rownames(annotation_row) %in% rownames(final_tfs)), &quot;\n&quot;)</code></pre>
+<pre><code>All annotation samples are in the TF activity matrix: TRUE </code></pre>
+<pre class="r"><code>cat(&quot;All TF activity matrix samples are in the annotation:&quot;, all(rownames(final_tfs) %in% rownames(annotation_row)), &quot;\n&quot;)</code></pre>
+<pre><code>All TF activity matrix samples are in the annotation: TRUE </code></pre>
+<pre class="r"><code># Color palette
+colors &lt;- rev(RColorBrewer::brewer.pal(n = 11, name = &quot;RdBu&quot;))
+colors.use &lt;- grDevices::colorRampPalette(colors = colors)(100)
+
+# Define breaks 
+my_breaks &lt;- c(seq(-2, 0, length.out = ceiling(100 / 2) + 1),
+               seq(0.05, 2, length.out = floor(100 / 2)))
+
+# Define colors for annotation
+ann_colors &lt;- list(
+  ulceration = c(
+    &quot;Ulcerated&quot; = &quot;#E8CC03&quot;,  
+    &quot;Non-ulcerated&quot; = &quot;#730769&quot;
+  )
+)
+
+# Check if any column contains non-numeric values
+tf_heatmap &lt;- pheatmap::pheatmap(
+  mat = final_tfs_mat,
+  color = colors.use,
+  border_color = &quot;white&quot;,
+  breaks = my_breaks,
+  annotation_row = annotation_row,
+  annotation_colors = ann_colors,
+  cellwidth = 8,
+  cellheight = 8,
+  treeheight_row = 10,
+  treeheight_col = 10,
+  fontsize_row = 8,
+  fontsize_col = 8,
+  show_rownames = TRUE,
+  show_colnames = TRUE,
+  annotation_names_row = TRUE,
+  annotation_legend = TRUE,
+  main = &quot;Transcription Factor Activity by Ulceration Status&quot;,
+  annotation_legend_param = list(title = &quot;Ulceration\nStatus&quot;),
+  annotation_names_rot = 0,
+  annotation_width = unit(2, &quot;cm&quot;),
+  annotation_names_side = &quot;left&quot;,
+  fontsize = 10,
+  annotation_names_size = 12
+)
+
+print(tf_heatmap)</code></pre>
+<p><img src="figure/test_render_TFactivity.Rmd/unnamed-chunk-6-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="f---tf-activity-barplot" class="section level2">
+<h2>2F - TF activity Barplot</h2>
+<p>Activity inference using Univariate Linear Model (ULM) on
+differential expression results. DecoupleR fits a linear model that
+predicts the observed gene expression based on the TF’s TF-Gene
+interaction weights. The t-value of the slope is used as the activity
+score.</p>
+<pre class="r"><code># Load differential expression results
+results_DE &lt;- readRDS(here(&quot;data&quot;, &quot;DE_results.rds&quot;))
+
+# Extract statistics and filter
+deg &lt;- results_DE %&gt;%
+  dplyr::select(log2FoldChange, stat, padj) %&gt;% 
+  filter(!is.na(stat)) %&gt;% 
+  filter(!is.na(padj))
+
+# Sort based on t-statistic
+deg &lt;- deg[order(deg$stat), ]
+
+# Add gene identifiers
+gene_ann &lt;- readRDS(here(&quot;data&quot;, &quot;annotation.rds&quot;))
+
+deg &lt;- deg %&gt;% 
+  rownames_to_column(var = &quot;ENSEMBL_GENE_ID&quot;) %&gt;%
+  inner_join(gene_ann, by = &quot;ENSEMBL_GENE_ID&quot;) %&gt;%
+  relocate(external_gene_name, .after = ENSEMBL_GENE_ID)
+
+# Set gene symbols as row names
+names &lt;- make.unique(deg$external_gene_name)
+rownames(deg) &lt;- names
+
+# Run ULM on DE t-statistic
+TF_act_ulc &lt;- run_ulm(
+  mat = deg[, &#39;stat&#39;, drop = FALSE], 
+  net = net, 
+  .source = &#39;source&#39;, 
+  .target = &#39;target&#39;, 
+  .mor = &#39;mor&#39;, 
+  minsize = 5
+)
+
+# Add adjusted p-values and filter significant TFs
+significant_TFs_adjusted &lt;- TF_act_ulc %&gt;%
+  mutate(padj = p.adjust(p_value, method = &quot;BH&quot;)) %&gt;%
+  filter(padj &lt; 0.05)
+
+# Save significant TFs 
+# write_csv(significant_TFs_adjusted, &quot;significant_TFs_ulceration.csv&quot;)
+
+# Add ranking
+TF_act_ulc &lt;- significant_TFs_adjusted %&gt;% 
+  mutate(rnk = NA)
+
+# Rank TFs by score (positive and negative separately)
+msk &lt;- TF_act_ulc$score &gt; 0
+TF_act_ulc[msk, &#39;rnk&#39;] &lt;- rank(-TF_act_ulc[msk, &#39;score&#39;]) 
+TF_act_ulc[!msk, &#39;rnk&#39;] &lt;- rank(-abs(TF_act_ulc[!msk, &#39;score&#39;])) 
+
+# Select top TFs for visualization
+n_tfs_vis &lt;- 25
+TF_sorted &lt;- TF_act_ulc %&gt;% 
+  arrange(rnk) %&gt;%
+  head(n_tfs_vis) %&gt;% 
+  pull(source)  
+
+# Filter 
+TF_visualization &lt;- TF_act_ulc %&gt;% 
+  filter(source %in% TF_sorted)
+
+#saveRDS(TF_visualization, &quot;top25_TFs_ulceration_vis.rds&quot;)</code></pre>
+<pre class="r"><code>#colors &lt;- rev(RColorBrewer::brewer.pal(n = 11, name = &quot;RdBu&quot;)[c(2, 10)])
+# Barplot of top differential TFs 
+p1 &lt;- ggplot(TF_visualization, aes(x = reorder(source, score), y = score)) + 
+  geom_bar(aes(fill = score &gt; 0), stat = &quot;identity&quot;) +  # Discrete coloring based on sign
+  scale_fill_manual(
+    values = c(&quot;#0571b0&quot;, &quot;#ca0020&quot;),  # Blue for FALSE (negative), Red for TRUE (positive)
+    labels = c(&quot;Repressed&quot;, &quot;Activated&quot;),
+    name = &quot;Activity&quot;
+  ) + 
+  theme_minimal() +
+  theme(
+    axis.title = element_text(face = &quot;bold&quot;, size = 12),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 10, face = &quot;bold&quot;),
+    axis.text.y = element_text(size = 10, face = &quot;bold&quot;),
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    legend.position = &quot;right&quot;
+  ) +
+  xlab(&quot;Transcription Factors&quot;) + 
+  ylab(&quot;Activity Score&quot;) +
+  ggtitle(&quot;Top 25 Significant TFs in Ulcerated Acral Melanoma&quot;)
+
+print(p1)</code></pre>
+<p><img src="figure/test_render_TFactivity.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div
+id="relationship-between-zeb1-targets-and-their-differential-expression"
+class="section level2">
+<h2>Relationship between ZEB1 targets and their differential
+expression</h2>
+<pre class="r"><code># Define TF
+tf &lt;- &#39;ZEB1&#39;
+
+# Filter for ZEB1 targets
+df &lt;- net %&gt;%
+  filter(source == tf) %&gt;%
+  arrange(target) %&gt;%
+  mutate(ID = target, color = &quot;3&quot;) %&gt;%
+  column_to_rownames(&#39;target&#39;)
+
+# Find overlapping genes between DEGs and ZEB1 targets
+inter &lt;- sort(intersect(rownames(deg), rownames(df)))
+df &lt;- df[inter, ]
+
+# Rename DEG columns 
+deg_formatted &lt;- deg %&gt;%
+  dplyr::select(log2FoldChange, stat, padj) %&gt;%
+  dplyr::rename(
+    logfc = log2FoldChange,
+    t_value = stat,
+    pval = padj
+  )
+
+# Add DE statistics to df
+df[, c(&#39;logfc&#39;, &#39;t_value&#39;, &#39;pval&#39;)] &lt;- deg_formatted[inter, c(&#39;logfc&#39;, &#39;t_value&#39;, &#39;pval&#39;)]
+
+# Color based on consistency between mode of regulation and observed changes (t-value)
+df &lt;- df %&gt;%
+  dplyr::mutate(color = dplyr::if_else(mor &gt; 0 &amp; t_value &gt; 0, &#39;1&#39;, color)) %&gt;%
+  dplyr::mutate(color = dplyr::if_else(mor &gt; 0 &amp; t_value &lt; 0, &#39;2&#39;, color)) %&gt;%
+  dplyr::mutate(color = dplyr::if_else(mor &lt; 0 &amp; t_value &gt; 0, &#39;2&#39;, color)) %&gt;%
+  dplyr::mutate(color = dplyr::if_else(mor &lt; 0 &amp; t_value &lt; 0, &#39;1&#39;, color))
+
+# Define color scheme
+colors &lt;- rev(RColorBrewer::brewer.pal(n = 11, name = &quot;RdBu&quot;)[c(2, 10)])
+
+# Create plot
+p2 &lt;- ggplot2::ggplot(
+  data = df, 
+  mapping = ggplot2::aes(
+    x = logfc, 
+    y = -log10(pval), 
+    color = color,
+    size = abs(mor)
+  )
+) + 
+  ggplot2::geom_point(size = 2.5, color = &quot;black&quot;) + 
+  ggplot2::geom_point(size = 1.5) +
+  ggplot2::scale_colour_manual(
+    values = c(colors[2], colors[1], &quot;grey&quot;),
+    name = &quot;Regulation&quot;,
+    labels = c(&quot;Consistent&quot;, &quot;Inconsistent&quot;, &quot;Unknown&quot;)
+  ) +
+  ggrepel::geom_label_repel(
+    mapping = ggplot2::aes(
+      label = ID,
+      size = 1
+    ),
+    max.overlaps = 20,
+    box.padding = 0.5,
+    label.padding = 0.2,
+    min.segment.length = 0
+  ) + 
+  ggplot2::theme_minimal() +
+  ggplot2::theme(
+    legend.position = &quot;right&quot;,
+    plot.title = element_text(face = &quot;bold&quot;, size = 14),
+    axis.title = element_text(face = &quot;bold&quot;, size = 12)
+  ) +
+  ggplot2::geom_vline(xintercept = 0, linetype = &#39;dotted&#39;) +
+  ggplot2::geom_hline(yintercept = 0, linetype = &#39;dotted&#39;) +
+  ggplot2::labs(
+    title = paste0(tf, &quot; Target Genes in Ulcerated vs. Non-Ulcerated Acral Melanoma&quot;),
+    x = &quot;log2 Fold Change&quot;,
+    y = &quot;-log10(p-value)&quot;,
+    size = &quot;Regulation Strength&quot;
+  ) +
+  guides(size = guide_legend(title = &quot;Regulation Strength&quot;))
+
+print(p2)</code></pre>
+<p><img src="figure/test_render_TFactivity.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>This plot shows ZEB1 target genes and their differential expression
+pattern in ulcerated vs non-ulcerated acral tumours. Point size
+represents the predicted strength of ZEB1’s influence on each gene. Red
+points show genes that respond as expected to ZEB1 activity. Blue points
+show genes that respond opposite to how we’d expect based on ZEB1
+activity</p>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.4.0 (2024-04-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 22.04.4 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0 
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=es_MX.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=es_MX.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=es_MX.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=es_MX.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: America/Mexico_City
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] here_1.0.1         RColorBrewer_1.1-3 ggrepel_0.9.6      pheatmap_1.0.12   
+ [5] OmnipathR_3.15.1   decoupleR_2.10.0   lubridate_1.9.4    forcats_1.0.0     
+ [9] stringr_1.5.1      dplyr_1.1.4        purrr_1.0.2        readr_2.1.5       
+[13] tidyr_1.3.1        tibble_3.2.1       ggplot2_3.5.1      tidyverse_2.0.0   
+[17] workflowr_1.7.1   
+
+loaded via a namespace (and not attached):
+ [1] tidyselect_1.2.1    farver_2.1.2        blob_1.2.4         
+ [4] R.utils_2.12.3      fastmap_1.2.0       promises_1.3.2     
+ [7] XML_3.99-0.17       digest_0.6.37       timechange_0.3.0   
+[10] lifecycle_1.0.4     processx_3.8.4      RSQLite_2.3.9      
+[13] magrittr_2.0.3      compiler_4.4.0      rlang_1.1.4        
+[16] sass_0.4.9          progress_1.2.3      tools_4.4.0        
+[19] igraph_2.1.2        yaml_2.3.10         knitr_1.49         
+[22] labeling_0.4.3      prettyunits_1.2.0   bit_4.5.0.1        
+[25] curl_6.0.1          xml2_1.3.6          BiocParallel_1.38.0
+[28] withr_3.0.2         R.oo_1.27.0         grid_4.4.0         
+[31] git2r_0.33.0        colorspace_2.1-1    scales_1.3.0       
+[34] cli_3.6.3           rmarkdown_2.29      crayon_1.5.3       
+[37] generics_0.1.3      rstudioapi_0.17.1   httr_1.4.7         
+[40] tzdb_0.4.0          readxl_1.4.3        DBI_1.2.3          
+[43] cachem_1.1.0        rvest_1.0.4         parallel_4.4.0     
+[46] cellranger_1.1.0    vctrs_0.6.5         Matrix_1.6-5       
+[49] jsonlite_1.8.9      callr_3.7.6         hms_1.1.3          
+[52] bit64_4.5.2         jquerylib_0.1.4     glue_1.8.0         
+[55] parallelly_1.41.0   codetools_0.2-19    ps_1.8.1           
+[58] stringi_1.8.4       gtable_0.3.6        later_1.4.1        
+[61] munsell_0.5.1       logger_0.4.0        pillar_1.10.0      
+[64] rappdirs_0.3.3      htmltools_0.5.8.1   R6_2.5.1           
+[67] rprojroot_2.0.4     evaluate_1.0.1      lattice_0.22-5     
+[70] R.methodsS3_1.8.2   backports_1.5.0     memoise_2.0.1      
+[73] httpuv_1.6.15       bslib_0.8.0         zip_2.3.1          
+[76] Rcpp_1.0.13-1       checkmate_2.3.2     whisker_0.4.1      
+[79] xfun_0.49           fs_1.6.5            getPass_0.2-4      
+[82] pkgconfig_2.0.3    </code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.4.0 (2024-04-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 22.04.4 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0 
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=es_MX.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=es_MX.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=es_MX.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=es_MX.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: America/Mexico_City
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] here_1.0.1         RColorBrewer_1.1-3 ggrepel_0.9.6      pheatmap_1.0.12   
+ [5] OmnipathR_3.15.1   decoupleR_2.10.0   lubridate_1.9.4    forcats_1.0.0     
+ [9] stringr_1.5.1      dplyr_1.1.4        purrr_1.0.2        readr_2.1.5       
+[13] tidyr_1.3.1        tibble_3.2.1       ggplot2_3.5.1      tidyverse_2.0.0   
+[17] workflowr_1.7.1   
+
+loaded via a namespace (and not attached):
+ [1] tidyselect_1.2.1    farver_2.1.2        blob_1.2.4         
+ [4] R.utils_2.12.3      fastmap_1.2.0       promises_1.3.2     
+ [7] XML_3.99-0.17       digest_0.6.37       timechange_0.3.0   
+[10] lifecycle_1.0.4     processx_3.8.4      RSQLite_2.3.9      
+[13] magrittr_2.0.3      compiler_4.4.0      rlang_1.1.4        
+[16] sass_0.4.9          progress_1.2.3      tools_4.4.0        
+[19] igraph_2.1.2        yaml_2.3.10         knitr_1.49         
+[22] labeling_0.4.3      prettyunits_1.2.0   bit_4.5.0.1        
+[25] curl_6.0.1          xml2_1.3.6          BiocParallel_1.38.0
+[28] withr_3.0.2         R.oo_1.27.0         grid_4.4.0         
+[31] git2r_0.33.0        colorspace_2.1-1    scales_1.3.0       
+[34] cli_3.6.3           rmarkdown_2.29      crayon_1.5.3       
+[37] generics_0.1.3      rstudioapi_0.17.1   httr_1.4.7         
+[40] tzdb_0.4.0          readxl_1.4.3        DBI_1.2.3          
+[43] cachem_1.1.0        rvest_1.0.4         parallel_4.4.0     
+[46] cellranger_1.1.0    vctrs_0.6.5         Matrix_1.6-5       
+[49] jsonlite_1.8.9      callr_3.7.6         hms_1.1.3          
+[52] bit64_4.5.2         jquerylib_0.1.4     glue_1.8.0         
+[55] parallelly_1.41.0   codetools_0.2-19    ps_1.8.1           
+[58] stringi_1.8.4       gtable_0.3.6        later_1.4.1        
+[61] munsell_0.5.1       logger_0.4.0        pillar_1.10.0      
+[64] rappdirs_0.3.3      htmltools_0.5.8.1   R6_2.5.1           
+[67] rprojroot_2.0.4     evaluate_1.0.1      lattice_0.22-5     
+[70] R.methodsS3_1.8.2   backports_1.5.0     memoise_2.0.1      
+[73] httpuv_1.6.15       bslib_0.8.0         zip_2.3.1          
+[76] Rcpp_1.0.13-1       checkmate_2.3.2     whisker_0.4.1      
+[79] xfun_0.49           fs_1.6.5            getPass_0.2-4      
+[82] pkgconfig_2.0.3    </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
