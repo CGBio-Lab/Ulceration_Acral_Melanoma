@@ -30,7 +30,6 @@
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -227,9 +226,6 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-</style>
 
 
 
@@ -252,7 +248,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html"># Ulceration_AM</a>
+      <a class="navbar-brand" href="index.html">ulceration_AM</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -274,14 +270,6 @@ $(document).ready(function () {
 </div><!--/.navbar -->
 
 <div id="header">
-
-<div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
-<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
-<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
-</ul>
-</div>
 
 
 
@@ -361,13 +349,13 @@ results.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong1644b9e">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong248524c">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> 1644b9e
+aria-hidden="true"></span> <strong>Repository version:</strong> 248524c
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong1644b9e"
+<div id="strongRepositoryversionstrong248524c"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -376,7 +364,7 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 1644b9e.
+The results in this page were generated with repository version 248524c.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -394,7 +382,6 @@ Ignored files:
     Ignored:    .Rproj.user/
 
 Untracked files:
-    Untracked:  DE_results_ulceration_ranked.rds
     Untracked:  data/DE_results.rds
     Untracked:  data/DE_results_ranked.rds
     Untracked:  data/DE_results_ulceration_rankednew.rds
@@ -404,8 +391,9 @@ Untracked files:
     Untracked:  data/normalized_counts.rds
     Untracked:  data/rawcounts_am.rds
     Untracked:  omnipathr-log/
-    Untracked:  ulceration_combined_panel.pdf
-    Untracked:  ulceration_mitotic.pdf
+    Untracked:  output/ulceration_combined_panel.pdf
+    Untracked:  output/ulceration_mitotic.pdf
+    Untracked:  output/volcanoplot.pdf
     Untracked:  volcanoplot.pdf
 
 Unstaged changes:
@@ -457,6 +445,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+73f3f5b
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-04
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -579,11 +584,6 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

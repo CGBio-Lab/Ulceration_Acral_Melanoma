@@ -35,7 +35,6 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -232,9 +231,6 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-</style>
 
 
 
@@ -330,7 +326,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html"># Ulceration_AM</a>
+      <a class="navbar-brand" href="index.html">ulceration_AM</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -352,14 +348,6 @@ div.tocify {
 </div><!--/.navbar -->
 
 <div id="header">
-
-<div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
-<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
-<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
-</ul>
-</div>
 
 
 
@@ -525,13 +513,13 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong1644b9e">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong248524c">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> 1644b9e
+aria-hidden="true"></span> <strong>Repository version:</strong> 248524c
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong1644b9e"
+<div id="strongRepositoryversionstrong248524c"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -540,7 +528,7 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 1644b9e.
+The results in this page were generated with repository version 248524c.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -558,7 +546,6 @@ Ignored files:
     Ignored:    .Rproj.user/
 
 Untracked files:
-    Untracked:  DE_results_ulceration_ranked.rds
     Untracked:  data/DE_results.rds
     Untracked:  data/DE_results_ranked.rds
     Untracked:  data/DE_results_ulceration_rankednew.rds
@@ -568,8 +555,9 @@ Untracked files:
     Untracked:  data/normalized_counts.rds
     Untracked:  data/rawcounts_am.rds
     Untracked:  omnipathr-log/
-    Untracked:  ulceration_combined_panel.pdf
-    Untracked:  ulceration_mitotic.pdf
+    Untracked:  output/ulceration_combined_panel.pdf
+    Untracked:  output/ulceration_mitotic.pdf
+    Untracked:  output/volcanoplot.pdf
     Untracked:  volcanoplot.pdf
 
 Unstaged changes:
@@ -593,8 +581,8 @@ have uncommitted changes.
 <div id="versions" class="tab-pane fade">
 <p>
 These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/test_render_figure1.Rmd</code>)
-and HTML (<code>docs/test_render_figure1.html</code>) files. If you’ve
+made to the R Markdown (<code>analysis/figure1_clinical.Rmd</code>) and
+HTML (<code>docs/figure1_clinical.html</code>) files. If you’ve
 configured a remote Git repository (see <code>?wflow_git_remote</code>),
 click on the hyperlinks in the table below to view the files as they
 were in that past version.
@@ -626,7 +614,7 @@ Message
 Rmd
 </td>
 <td>
-1644b9e
+248524c
 </td>
 <td>
 Estef Vazquez
@@ -640,36 +628,38 @@ Update
 </tr>
 <tr>
 <td>
-html
+Rmd
 </td>
 <td>
-5c68f52
+c095b14
 </td>
 <td>
 Estef Vazquez
 </td>
 <td>
-2025-04-03
+2025-04-04
 </td>
 <td>
-Build site.
+wflow_rename("analysis/test_render_figure1.Rmd",
+"analysis/figure1_clinical.Rmd")
 </td>
 </tr>
 <tr>
 <td>
-Rmd
+html
 </td>
 <td>
-ca58350
+c095b14
 </td>
 <td>
 Estef Vazquez
 </td>
 <td>
-2025-04-03
+2025-04-04
 </td>
 <td>
-Publish transcriptomic analyses
+wflow_rename("analysis/test_render_figure1.Rmd",
+"analysis/figure1_clinical.Rmd")
 </td>
 </tr>
 </tbody>
@@ -756,44 +746,7 @@ ulc_age_plot &lt;- ggplot(data = metadata,
   ) + coord_cartesian(xlim = c(0.5, 2.5)) 
 
 ulc_age_plot</code></pre>
-<p><img src="figure/test_render_figure1.Rmd/unnamed-chunk-2-1.png" width="1152" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-1">
-Past versions of unnamed-chunk-2-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-2-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-5c68f52
-</td>
-<td>
-Estef Vazquez
-</td>
-<td>
-2025-04-03
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/figure1_clinical.Rmd/boxplot_age-1.png" width="1152" style="display: block; margin: auto;" /></p>
 </div>
 <div id="b---breslow-depth" class="section level3">
 <h3>1B - Breslow Depth</h3>
@@ -840,45 +793,7 @@ ulc_bres_plot &lt;- ggplot(metadata,
     expand = expansion(mult = c(0.05, 0.05))
   )
 ulc_bres_plot</code></pre>
-<p><img src="figure/test_render_figure1.Rmd/unnamed-chunk-3-1.png" width="1152" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-1">
-Past versions of unnamed-chunk-3-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-3-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-5c68f52
-</td>
-<td>
-Estef Vazquez
-</td>
-<td>
-2025-04-03
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>#ggsave(&quot;ulceration_breslow.pdf&quot;, height=8, width=7, dpi=400)</code></pre>
+<p><img src="figure/figure1_clinical.Rmd/violin_breslow-1.png" width="1152" style="display: block; margin: auto;" /></p>
 </div>
 <div id="c---mitotic-index" class="section level3">
 <h3>1C - Mitotic Index</h3>
@@ -934,45 +849,7 @@ ulc_mit_plot &lt;- ggplot(data = metadata,
     expand = expansion(mult = c(0.05, 0.05))
   )
 ulc_mit_plot</code></pre>
-<p><img src="figure/test_render_figure1.Rmd/unnamed-chunk-4-1.png" width="1152" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
-Past versions of unnamed-chunk-4-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-4-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-5c68f52
-</td>
-<td>
-Estef Vazquez
-</td>
-<td>
-2025-04-03
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>ggsave(&quot;ulceration_mitotic.pdf&quot;, height=8, width=8, dpi=400)</code></pre>
+<p><img src="figure/figure1_clinical.Rmd/boxplot_index-1.png" width="1152" style="display: block; margin: auto;" /></p>
 </div>
 <div id="d---tumor-stage" class="section level3">
 <h3>1D - Tumor Stage</h3>
@@ -1003,45 +880,7 @@ Estef Vazquez
     fill = &quot;Ulceration&quot;
   )
 ulc_stage_plot</code></pre>
-<p><img src="figure/test_render_figure1.Rmd/unnamed-chunk-5-1.png" width="1152" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
-Past versions of unnamed-chunk-5-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-5-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-5c68f52
-</td>
-<td>
-Estef Vazquez
-</td>
-<td>
-2025-04-03
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>#ggsave(&quot;ulceration_stage.pdf&quot;, height=8, width=7, dpi=400)</code></pre>
+<p><img src="figure/figure1_clinical.Rmd/barplot_stage-1.png" width="1152" style="display: block; margin: auto;" /></p>
 </div>
 <div id="tumor-recurrence" class="section level3">
 <h3>Tumor recurrence</h3>
@@ -1082,44 +921,7 @@ Estef Vazquez
     subtitle = paste(&quot;Total cases:&quot;, nrow(metadata)),
     fill = &quot;Recurrence&quot;
   )</code></pre>
-<p><img src="figure/test_render_figure1.Rmd/unnamed-chunk-6-1.png" width="1152" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
-Past versions of unnamed-chunk-6-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-6-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-5c68f52
-</td>
-<td>
-Estef Vazquez
-</td>
-<td>
-2025-04-03
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/figure1_clinical.Rmd/unnamed-chunk-1-1.png" width="1152" style="display: block; margin: auto;" /></p>
 </div>
 <div id="panel" class="section level3">
 <h3>Panel</h3>
@@ -1183,44 +985,7 @@ final_grid_with_labels &lt;- cowplot::ggdraw(final_grid) +
   cowplot::draw_label(&quot;d&quot;, x = 0.52, y = 0.48, size = 18, fontface = &quot;bold&quot;)
 
 final_grid_with_labels</code></pre>
-<p><img src="figure/test_render_figure1.Rmd/unnamed-chunk-7-1.png" width="1152" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
-Past versions of unnamed-chunk-7-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-7-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-5c68f52
-</td>
-<td>
-Estef Vazquez
-</td>
-<td>
-2025-04-03
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/figure1_clinical.Rmd/panel-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#ggsave(&quot;ulceration_combined_panel.pdf&quot;, final_grid_with_labels, height = 10, width = 12, dpi = 400)</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.4.0 (2024-04-24)
@@ -1256,19 +1021,18 @@ loaded via a namespace (and not attached):
  [5] rstatix_0.7.2     callr_3.7.6       tzdb_0.4.0        vctrs_0.6.5      
  [9] tools_4.4.0       ps_1.8.1          generics_0.1.3    pkgconfig_2.0.3  
 [13] lifecycle_1.0.4   compiler_4.4.0    farver_2.1.2      git2r_0.33.0     
-[17] textshaping_0.4.1 munsell_0.5.1     getPass_0.2-4     carData_3.0-5    
-[21] httpuv_1.6.15     htmltools_0.5.8.1 sass_0.4.9        yaml_2.3.10      
-[25] Formula_1.2-5     later_1.4.1       pillar_1.10.0     car_3.1-3        
-[29] jquerylib_0.1.4   whisker_0.4.1     cachem_1.1.0      abind_1.4-5      
-[33] tidyselect_1.2.1  digest_0.6.37     stringi_1.8.4     labeling_0.4.3   
-[37] cowplot_1.1.3     rprojroot_2.0.4   fastmap_1.2.0     grid_4.4.0       
-[41] colorspace_2.1-1  cli_3.6.3         magrittr_2.0.3    broom_1.0.7      
-[45] withr_3.0.2       scales_1.3.0      promises_1.3.2    backports_1.5.0  
-[49] timechange_0.3.0  rmarkdown_2.29    httr_1.4.7        gridExtra_2.3    
-[53] ggsignif_0.6.4    ragg_1.3.3        hms_1.1.3         evaluate_1.0.1   
-[57] knitr_1.49        rlang_1.1.4       Rcpp_1.0.13-1     glue_1.8.0       
-[61] rstudioapi_0.17.1 jsonlite_1.8.9    R6_2.5.1          systemfonts_1.1.0
-[65] fs_1.6.5         </code></pre>
+[17] munsell_0.5.1     getPass_0.2-4     carData_3.0-5     httpuv_1.6.15    
+[21] htmltools_0.5.8.1 sass_0.4.9        yaml_2.3.10       Formula_1.2-5    
+[25] later_1.4.1       pillar_1.10.0     car_3.1-3         jquerylib_0.1.4  
+[29] whisker_0.4.1     cachem_1.1.0      abind_1.4-5       tidyselect_1.2.1 
+[33] digest_0.6.37     stringi_1.8.4     labeling_0.4.3    cowplot_1.1.3    
+[37] rprojroot_2.0.4   fastmap_1.2.0     grid_4.4.0        colorspace_2.1-1 
+[41] cli_3.6.3         magrittr_2.0.3    broom_1.0.7       withr_3.0.2      
+[45] scales_1.3.0      promises_1.3.2    backports_1.5.0   timechange_0.3.0 
+[49] rmarkdown_2.29    httr_1.4.7        gridExtra_2.3     ggsignif_0.6.4   
+[53] hms_1.1.3         evaluate_1.0.1    knitr_1.49        rlang_1.1.4      
+[57] Rcpp_1.0.13-1     glue_1.8.0        rstudioapi_0.17.1 jsonlite_1.8.9   
+[61] R6_2.5.1          fs_1.6.5         </code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1311,19 +1075,18 @@ loaded via a namespace (and not attached):
  [5] rstatix_0.7.2     callr_3.7.6       tzdb_0.4.0        vctrs_0.6.5      
  [9] tools_4.4.0       ps_1.8.1          generics_0.1.3    pkgconfig_2.0.3  
 [13] lifecycle_1.0.4   compiler_4.4.0    farver_2.1.2      git2r_0.33.0     
-[17] textshaping_0.4.1 munsell_0.5.1     getPass_0.2-4     carData_3.0-5    
-[21] httpuv_1.6.15     htmltools_0.5.8.1 sass_0.4.9        yaml_2.3.10      
-[25] Formula_1.2-5     later_1.4.1       pillar_1.10.0     car_3.1-3        
-[29] jquerylib_0.1.4   whisker_0.4.1     cachem_1.1.0      abind_1.4-5      
-[33] tidyselect_1.2.1  digest_0.6.37     stringi_1.8.4     labeling_0.4.3   
-[37] cowplot_1.1.3     rprojroot_2.0.4   fastmap_1.2.0     grid_4.4.0       
-[41] colorspace_2.1-1  cli_3.6.3         magrittr_2.0.3    broom_1.0.7      
-[45] withr_3.0.2       scales_1.3.0      promises_1.3.2    backports_1.5.0  
-[49] timechange_0.3.0  rmarkdown_2.29    httr_1.4.7        gridExtra_2.3    
-[53] ggsignif_0.6.4    ragg_1.3.3        hms_1.1.3         evaluate_1.0.1   
-[57] knitr_1.49        rlang_1.1.4       Rcpp_1.0.13-1     glue_1.8.0       
-[61] rstudioapi_0.17.1 jsonlite_1.8.9    R6_2.5.1          systemfonts_1.1.0
-[65] fs_1.6.5         </code></pre>
+[17] munsell_0.5.1     getPass_0.2-4     carData_3.0-5     httpuv_1.6.15    
+[21] htmltools_0.5.8.1 sass_0.4.9        yaml_2.3.10       Formula_1.2-5    
+[25] later_1.4.1       pillar_1.10.0     car_3.1-3         jquerylib_0.1.4  
+[29] whisker_0.4.1     cachem_1.1.0      abind_1.4-5       tidyselect_1.2.1 
+[33] digest_0.6.37     stringi_1.8.4     labeling_0.4.3    cowplot_1.1.3    
+[37] rprojroot_2.0.4   fastmap_1.2.0     grid_4.4.0        colorspace_2.1-1 
+[41] cli_3.6.3         magrittr_2.0.3    broom_1.0.7       withr_3.0.2      
+[45] scales_1.3.0      promises_1.3.2    backports_1.5.0   timechange_0.3.0 
+[49] rmarkdown_2.29    httr_1.4.7        gridExtra_2.3     ggsignif_0.6.4   
+[53] hms_1.1.3         evaluate_1.0.1    knitr_1.49        rlang_1.1.4      
+[57] Rcpp_1.0.13-1     glue_1.8.0        rstudioapi_0.17.1 jsonlite_1.8.9   
+[61] R6_2.5.1          fs_1.6.5         </code></pre>
 </div>
 </div>
 </div>
@@ -1382,11 +1145,6 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
 
 <script>
 $(document).ready(function ()  {

@@ -35,7 +35,6 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -232,9 +231,6 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-</style>
 
 
 
@@ -330,7 +326,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html"># Ulceration_AM</a>
+      <a class="navbar-brand" href="index.html">ulceration_AM</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -352,14 +348,6 @@ div.tocify {
 </div><!--/.navbar -->
 
 <div id="header">
-
-<div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
-<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
-<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
-</ul>
-</div>
 
 
 
@@ -525,13 +513,13 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong1644b9e">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong248524c">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> 1644b9e
+aria-hidden="true"></span> <strong>Repository version:</strong> 248524c
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong1644b9e"
+<div id="strongRepositoryversionstrong248524c"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -540,7 +528,7 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 1644b9e.
+The results in this page were generated with repository version 248524c.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -558,7 +546,6 @@ Ignored files:
     Ignored:    .Rproj.user/
 
 Untracked files:
-    Untracked:  DE_results_ulceration_ranked.rds
     Untracked:  data/DE_results.rds
     Untracked:  data/DE_results_ranked.rds
     Untracked:  data/DE_results_ulceration_rankednew.rds
@@ -568,8 +555,9 @@ Untracked files:
     Untracked:  data/normalized_counts.rds
     Untracked:  data/rawcounts_am.rds
     Untracked:  omnipathr-log/
-    Untracked:  ulceration_combined_panel.pdf
-    Untracked:  ulceration_mitotic.pdf
+    Untracked:  output/ulceration_combined_panel.pdf
+    Untracked:  output/ulceration_mitotic.pdf
+    Untracked:  output/volcanoplot.pdf
     Untracked:  volcanoplot.pdf
 
 Unstaged changes:
@@ -593,11 +581,11 @@ have uncommitted changes.
 <div id="versions" class="tab-pane fade">
 <p>
 These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/test_render_GSEA_TF.Rmd</code>)
-and HTML (<code>docs/test_render_GSEA_TF.html</code>) files. If you’ve
-configured a remote Git repository (see <code>?wflow_git_remote</code>),
-click on the hyperlinks in the table below to view the files as they
-were in that past version.
+made to the R Markdown (<code>analysis/figure2_GSEA.Rmd</code>) and HTML
+(<code>docs/figure2_GSEA.html</code>) files. If you’ve configured a
+remote Git repository (see <code>?wflow_git_remote</code>), click on the
+hyperlinks in the table below to view the files as they were in that
+past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -626,7 +614,7 @@ Message
 Rmd
 </td>
 <td>
-1644b9e
+248524c
 </td>
 <td>
 Estef Vazquez
@@ -640,36 +628,38 @@ Update
 </tr>
 <tr>
 <td>
-html
+Rmd
 </td>
 <td>
-5c68f52
+dd1d8cb
 </td>
 <td>
 Estef Vazquez
 </td>
 <td>
-2025-04-03
+2025-04-04
 </td>
 <td>
-Build site.
+wflow_rename("analysis/test_render_GSEA_TF.Rmd",
+"analysis/figure2_GSEA.Rmd")
 </td>
 </tr>
 <tr>
 <td>
-Rmd
+html
 </td>
 <td>
-ca58350
+dd1d8cb
 </td>
 <td>
 Estef Vazquez
 </td>
 <td>
-2025-04-03
+2025-04-04
 </td>
 <td>
-Publish transcriptomic analyses
+wflow_rename("analysis/test_render_GSEA_TF.Rmd",
+"analysis/figure2_GSEA.Rmd")
 </td>
 </tr>
 </tbody>
@@ -682,7 +672,8 @@ Publish transcriptomic analyses
 <p>We perform Gene Set Enrichment Analysis (GSEA) using GO terms and
 PROGENy to identify pathway activity in ulcerated vs non-ulcerated acral
 melanoma samples.</p>
-<pre class="r"><code>library(tidyverse)  
+<pre class="r"><code># Load required libraries
+library(tidyverse)  
 library(clusterProfiler)
 library(enrichplot)
 library(DOSE)
@@ -746,44 +737,7 @@ dotplot_gsea &lt;- dotplot(
   theme_classic()
 
 print(dotplot_gsea)</code></pre>
-<p><img src="figure/test_render_GSEA_TF.Rmd/unnamed-chunk-5-1.png" width="960" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
-Past versions of unnamed-chunk-5-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-5-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-5c68f52
-</td>
-<td>
-Estef Vazquez
-</td>
-<td>
-2025-04-03
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/figure2_GSEA.Rmd/visualization-1.png" width="960" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># NES plot for top enriched terms
 top_results &lt;- go_BP_df[1:11, ]
 library(stringr)
@@ -814,44 +768,7 @@ nes_plot &lt;- ggplot(top_results, aes(x = NES, y = reorder(Description, NES))) 
   )
 
 print(nes_plot)</code></pre>
-<p><img src="figure/test_render_GSEA_TF.Rmd/unnamed-chunk-5-2.png" width="960" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-2">
-Past versions of unnamed-chunk-5-2.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-5-2" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-5c68f52
-</td>
-<td>
-Estef Vazquez
-</td>
-<td>
-2025-04-03
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/figure2_GSEA.Rmd/visualization-2.png" width="960" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># GSEA enrichment plot - most up and down-regulated gene sets
 top_indices &lt;- c(which.max(gsea_BP@result$NES), which.min(gsea_BP@result$NES))
 enrichment_plots &lt;- gseaplot2(
@@ -860,44 +777,7 @@ enrichment_plots &lt;- gseaplot2(
   color = ulcer_colors)
 
 print(enrichment_plots)</code></pre>
-<p><img src="figure/test_render_GSEA_TF.Rmd/unnamed-chunk-5-3.png" width="960" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-3">
-Past versions of unnamed-chunk-5-3.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-5-3" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-5c68f52
-</td>
-<td>
-Estef Vazquez
-</td>
-<td>
-2025-04-03
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/figure2_GSEA.Rmd/visualization-3.png" width="960" style="display: block; margin: auto;" /></p>
 </div>
 <div id="pathway-analysis" class="section level2">
 <h2>Pathway Analysis</h2>
@@ -963,48 +843,8 @@ progeny_plot &lt;- ggplot(progeny_df, aes(x = reorder(pathway, normalized_score)
   )
 
 progeny_plot</code></pre>
-<p><img src="figure/test_render_GSEA_TF.Rmd/unnamed-chunk-6-1.png" width="1248" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
-Past versions of unnamed-chunk-6-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-6-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-5c68f52
-</td>
-<td>
-Estef Vazquez
-</td>
-<td>
-2025-04-03
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code># Save results
-#write.csv(progeny_df, &quot;results/PROGENy_pathway_results.csv&quot;)
-
-#ggsave(&quot;figures/PROGENy_pathway_activity.pdf&quot;, 
+<p><img src="figure/figure2_GSEA.Rmd/progeny-1.png" width="1248" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#ggsave(&quot;figures/PROGENy_pathway_activity.pdf&quot;, 
 #       progeny_plot, 
 #       width = 12, 
 #       height = 10, 
@@ -1226,11 +1066,6 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
 
 <script>
 $(document).ready(function ()  {
