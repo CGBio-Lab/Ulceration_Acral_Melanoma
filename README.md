@@ -1,4 +1,4 @@
-# ulceration_paper_workflowr
+# ulceration_AM
 
 A [workflowr][] project.
 

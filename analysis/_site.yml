@@ -1,7 +1,7 @@
-name: "ulceration_paper_workflowr"
+name: "ulceration_AM"
 output_dir: ../docs
 navbar:
-  title: "ulceration_paper_workflowr"
+  title: "ulceration_AM"
   left:
   - text: Home
     href: index.html
@@ -15,3 +15,5 @@ output:
     toc_float: yes
     theme: cosmo
     highlight: textmate
+
+
