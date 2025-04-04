@@ -16,7 +16,8 @@ This analysis uses decoupleR (Badia et al., 2022) to analyze transcription facto
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+source("code/check_data.R")
 ```
 
 ```{r, libraries, include=FALSE, warning=FALSE}

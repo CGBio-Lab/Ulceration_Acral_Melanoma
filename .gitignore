@@ -1,11 +1,5 @@
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
-.Rapp.history
-.DS_Store
-analysis/figure
-analysis/*png
-analysis/*html
-analysis/*_cache
-analysis/site_libs
+# Exclude large data files
+data/*.rds
+*.rds
+output/*.pdf
+omnipathr-log/
