@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 This document incorporates differential expression analysis and PCA, in relation to ulceration status in acral melanoma samples. It generates PCA and volcano plots.
 
-```{r}
+```{r libraries}
 # Load required libraries
 library(tidyverse)
 library(DESeq2)
@@ -29,7 +29,7 @@ library(plotly)
 library(here)
 ```
 
-```{r, echo=FALSE}
+```{r, metadata echo=FALSE}
 # Load metadata from 59 patients with complete ulceration status
 metadata <- read.csv(here("data", "clinical_am_prim.csv"))
 
@@ -39,7 +39,7 @@ metadata <- metadata %>%
 ```
 
 
-```{r, fig.width=12, fig.height=10, message=FALSE}
+```{r, dataprep fig.width=12, fig.height=10, message=FALSE}
 # Data Preparation - subset metadata 
 exp_design <- metadata %>% dplyr::select(sample_id, batch_number, sex, age, ulceration)
 
@@ -148,7 +148,7 @@ rownames(significant_genes_final) <- names
 
 ## 2A - Principal Component Analysis
 
-```{r}
+```{r pca}
 # PCA with top 1000 highly variable genes
 pcaData <- plotPCA(vsd, intgroup=c("ulceration"), 
                    ntop=1000, 
@@ -181,7 +181,7 @@ ggplot(pcaData, aes(x = PC1, y = PC2, color = group)) +
 
 ## 2B - Volcano Plot
 
-```{r, fig.width=12, fig.height=10}
+```{r, volcano fig.width=12, fig.height=10}
 # Theme 
 theme_set(theme_classic(base_size = 20) +
   theme(
