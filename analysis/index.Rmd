@@ -16,13 +16,13 @@ Welcome to the Acral Melanoma Ulceration website. This repository contains the c
 This repository includes R Markdown documents with step-by-step analyses, processed datasets, functions for data processing, and generated figures. Navigate through the following items:
 
 
-* [Figure 1. Clinical characteristics of acral melanoma patients according to ulceration status](test_render_figure1.html)
+* [Figure 1. Clinical characteristics of acral melanoma patients according to ulceration status](figure1_clinical.html)
 
-* [Figure 2. Transcriptional characterisation of acral melanoma tumors](test_render_figure2.html)
+* [Figure 2. Transcriptional characterisation of acral melanoma tumors](figure2_DE.html)
 
-* [Figure 2. GSEA analysis](test_render_GSEA_TF.html)
+* [Figure 2. GSEA analysis](figure2_GSEA.html)
 
-* [Figure 2. Transcription Factor activity inference](test_render_TFactivity.html)
+* [Figure 2. Transcription Factor activity inference](figure2_TF.html)
 
 * Figure 3. Immune Cell Type Composition
 

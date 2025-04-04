@@ -35,7 +35,7 @@ metadata <- metadata %>%
 
 ### 1A - Age
 
-```{r, boxplot_age fig.width=12, fig.height=10}
+```{r, boxplot_age, fig.width=12, fig.height=10}
 # Boxplot ulceration vs age
 ulc_age_plot <- ggplot(data = metadata,
        mapping = aes(x = factor(ulceration), y = age, 
@@ -91,7 +91,7 @@ ulc_age_plot
 
 ### 1B - Breslow Depth
 
-```{r, violin_breslow fig.width=12, fig.height=10}
+```{r, violin_breslow, fig.width=12, fig.height=10}
 # Violin plot ulceration vs breslow depth 
 ulc_bres_plot <- ggplot(metadata, 
             aes(x = factor(ulceration), 
@@ -139,7 +139,7 @@ ulc_bres_plot
 
 ### 1C - Mitotic Index
 
-```{r, boxplot_mindex fig.width=12, fig.height=10}
+```{r, boxplot_index, fig.width=12, fig.height=10}
 # Boxplot ulceration vs Mitotic Index
 ulc_mit_plot <- ggplot(data = metadata,
        mapping = aes(x = factor(ulceration), y = mitotic_index, 
@@ -196,7 +196,7 @@ ulc_mit_plot
 
 ### 1D - Tumor Stage
 
-```{r, barplot_stage fig.width=12, fig.height=10}
+```{r, barplot_stage, fig.width=12, fig.height=10}
 ulc_stage_plot <- ggplot(metadata, 
        aes(x = stage, 
            fill = factor(ulceration))) +
@@ -270,7 +270,7 @@ ggplot(metadata,
 
 ### Panel
 
-```{r, panel fig.width=12, fig.height=10}
+```{r, panel, fig.width=12, fig.height=10}
 
 # Combine plots into a single panel
 ulc_age_plot <- ulc_age_plot + 

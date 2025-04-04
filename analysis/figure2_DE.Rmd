@@ -29,7 +29,7 @@ library(plotly)
 library(here)
 ```
 
-```{r, metadata echo=FALSE}
+```{r, metadata, echo=FALSE}
 # Load metadata from 59 patients with complete ulceration status
 metadata <- read.csv(here("data", "clinical_am_prim.csv"))
 
@@ -39,7 +39,7 @@ metadata <- metadata %>%
 ```
 
 
-```{r, dataprep fig.width=12, fig.height=10, message=FALSE}
+```{r, dataprep, fig.width=12, fig.height=10, message=FALSE}
 # Data Preparation - subset metadata 
 exp_design <- metadata %>% dplyr::select(sample_id, batch_number, sex, age, ulceration)
 
@@ -181,7 +181,7 @@ ggplot(pcaData, aes(x = PC1, y = PC2, color = group)) +
 
 ## 2B - Volcano Plot
 
-```{r, volcano fig.width=12, fig.height=10}
+```{r, volcano, fig.width=12, fig.height=10}
 # Theme 
 theme_set(theme_classic(base_size = 20) +
   theme(

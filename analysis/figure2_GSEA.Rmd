@@ -27,6 +27,7 @@ options(enrichplot.colours = ulcer_colors)
 We perform Gene Set Enrichment Analysis (GSEA) using GO terms and PROGENy to identify pathway activity in ulcerated vs non-ulcerated acral melanoma samples.
 
 ```{r}
+# Load required libraries
 library(tidyverse)  
 library(clusterProfiler)
 library(enrichplot)
@@ -40,7 +41,7 @@ library(here)
 
 ## 2C - 2D - GSEA
 
-```{r, gsea fig.width=10, fig.height=10, message=FALSE}
+```{r, gsea, fig.width=10, fig.height=10, message=FALSE}
 # Data loading
 # Load differential expression results pre-ranked for GSEA
 ranked_GSEA <- readRDS("data/DE_results_ranked.rds")
@@ -83,7 +84,7 @@ go_BP_df <- (as.data.frame(gsea_BP))
 # write_csv(go_BP_df, "results/GSEA_analysis_BP.csv")
 ```
 
-```{r, visualization fig.width=10, fig.height=9, message=FALSE}
+```{r, visualization, fig.width=10, fig.height=9, message=FALSE}
 # --- Visualization ---
 # Dotplot showing activated and repressed pathways
 dotplot_gsea <- dotplot(
@@ -144,7 +145,7 @@ print(enrichment_plots)
 
 ## Pathway Analysis
 
-```{r, progeny fig.width=13, fig.height=10, message=FALSE}
+```{r, progeny, fig.width=13, fig.height=10, message=FALSE}
 # Data Preparation
 
 # Extract t-statistic 
