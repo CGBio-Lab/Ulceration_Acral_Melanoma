@@ -513,13 +513,13 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong248524c">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongafbf78f">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> 248524c
+aria-hidden="true"></span> <strong>Repository version:</strong> afbf78f
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong248524c"
+<div id="strongRepositoryversionstrongafbf78f"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -528,7 +528,7 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 248524c.
+The results in this page were generated with repository version afbf78f.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -609,6 +609,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+3148fdc
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-04
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -738,6 +755,43 @@ dotplot_gsea &lt;- dotplot(
 
 print(dotplot_gsea)</code></pre>
 <p><img src="figure/figure2_GSEA.Rmd/visualization-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-visualization-1">
+Past versions of visualization-1.png
+</button>
+</p>
+<div id="fig-visualization-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+3148fdc
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># NES plot for top enriched terms
 top_results &lt;- go_BP_df[1:11, ]
 library(stringr)
@@ -769,6 +823,43 @@ nes_plot &lt;- ggplot(top_results, aes(x = NES, y = reorder(Description, NES))) 
 
 print(nes_plot)</code></pre>
 <p><img src="figure/figure2_GSEA.Rmd/visualization-2.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-visualization-2">
+Past versions of visualization-2.png
+</button>
+</p>
+<div id="fig-visualization-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+3148fdc
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># GSEA enrichment plot - most up and down-regulated gene sets
 top_indices &lt;- c(which.max(gsea_BP@result$NES), which.min(gsea_BP@result$NES))
 enrichment_plots &lt;- gseaplot2(
@@ -778,6 +869,43 @@ enrichment_plots &lt;- gseaplot2(
 
 print(enrichment_plots)</code></pre>
 <p><img src="figure/figure2_GSEA.Rmd/visualization-3.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-visualization-3">
+Past versions of visualization-3.png
+</button>
+</p>
+<div id="fig-visualization-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+3148fdc
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="pathway-analysis" class="section level2">
 <h2>Pathway Analysis</h2>
@@ -844,6 +972,43 @@ progeny_plot &lt;- ggplot(progeny_df, aes(x = reorder(pathway, normalized_score)
 
 progeny_plot</code></pre>
 <p><img src="figure/figure2_GSEA.Rmd/progeny-1.png" width="1248" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-progeny-1">
+Past versions of progeny-1.png
+</button>
+</p>
+<div id="fig-progeny-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+3148fdc
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>#ggsave(&quot;figures/PROGENy_pathway_activity.pdf&quot;, 
 #       progeny_plot, 
 #       width = 12, 
