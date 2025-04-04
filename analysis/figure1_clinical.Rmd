@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 The following code creates visualizations comparing clinical features between ulcerated and non-ulcerated acral melanomas. It generates box plots for age and mitotic index, violin plot for Breslow depth, stacked bar plots for stage and recurrence, and a combined panel.
 
-```{r}
+```{r libraries}
 # Load required libraries
 library(tidyverse)
 library(patchwork)
@@ -35,8 +35,7 @@ metadata <- metadata %>%
 
 ### 1A - Age
 
-```{r, fig.width=12, fig.height=10}
-
+```{r, boxplot_age fig.width=12, fig.height=10}
 # Boxplot ulceration vs age
 ulc_age_plot <- ggplot(data = metadata,
        mapping = aes(x = factor(ulceration), y = age, 
@@ -88,13 +87,11 @@ ulc_age_plot <- ggplot(data = metadata,
   ) + coord_cartesian(xlim = c(0.5, 2.5)) 
 
 ulc_age_plot
-
-
 ```
 
 ### 1B - Breslow Depth
 
-```{r, fig.width=12, fig.height=10}
+```{r, violin_breslow fig.width=12, fig.height=10}
 # Violin plot ulceration vs breslow depth 
 ulc_bres_plot <- ggplot(metadata, 
             aes(x = factor(ulceration), 
@@ -138,13 +135,11 @@ ulc_bres_plot <- ggplot(metadata,
     expand = expansion(mult = c(0.05, 0.05))
   )
 ulc_bres_plot
-
-#ggsave("ulceration_breslow.pdf", height=8, width=7, dpi=400)
 ```
 
 ### 1C - Mitotic Index
 
-```{r, fig.width=12, fig.height=10}
+```{r, boxplot_mindex fig.width=12, fig.height=10}
 # Boxplot ulceration vs Mitotic Index
 ulc_mit_plot <- ggplot(data = metadata,
        mapping = aes(x = factor(ulceration), y = mitotic_index, 
@@ -197,15 +192,11 @@ ulc_mit_plot <- ggplot(data = metadata,
     expand = expansion(mult = c(0.05, 0.05))
   )
 ulc_mit_plot
-
-
-ggsave("ulceration_mitotic.pdf", height=8, width=8, dpi=400)
-
 ```
 
 ### 1D - Tumor Stage
 
-```{r, fig.width=12, fig.height=10}
+```{r, barplot_stage fig.width=12, fig.height=10}
 ulc_stage_plot <- ggplot(metadata, 
        aes(x = stage, 
            fill = factor(ulceration))) +
@@ -233,9 +224,6 @@ ulc_stage_plot <- ggplot(metadata,
     fill = "Ulceration"
   )
 ulc_stage_plot
-
-#ggsave("ulceration_stage.pdf", height=8, width=7, dpi=400)
-
 ```
 
 ### Tumor recurrence
@@ -278,13 +266,11 @@ ggplot(metadata,
     subtitle = paste("Total cases:", nrow(metadata)),
     fill = "Recurrence"
   )
-
-
 ```
 
 ### Panel
 
-```{r, fig.width=12, fig.height=10}
+```{r, panel fig.width=12, fig.height=10}
 
 # Combine plots into a single panel
 ulc_age_plot <- ulc_age_plot + 
@@ -346,7 +332,6 @@ final_grid_with_labels <- cowplot::ggdraw(final_grid) +
   cowplot::draw_label("d", x = 0.52, y = 0.48, size = 18, fontface = "bold")
 
 final_grid_with_labels
-
 
 #ggsave("ulceration_combined_panel.pdf", final_grid_with_labels, height = 10, width = 12, dpi = 400)
 ```
