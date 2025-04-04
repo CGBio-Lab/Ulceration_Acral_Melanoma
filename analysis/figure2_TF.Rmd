@@ -19,7 +19,7 @@ This analysis uses decoupleR (Badia et al., 2022) to analyze transcription facto
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r, message=FALSE}
+```{r, libraries warning=FALSE}
 # Load required packages
 library(tidyverse)
 library(decoupleR)
@@ -40,7 +40,7 @@ metadata <- metadata %>%
   mutate(across(c(-breslow_depth_mm, -mitotic_index, -age, -sample_id, -patient), as.factor))
 ```
 
-```{r, message=FALSE}
+```{r, processing message=FALSE}
 # Data pre-processing
 cts <- readRDS(here("data", "rawcounts_am.rds"))
 cts <- as.matrix(cts)
@@ -60,7 +60,7 @@ normalized_counts <- readRDS(here("data", "normalized_counts.rds"))
 logcounts <- log2(normalized_counts + 1)
 ```
 
-```{r}
+```{r mat_preparation}
 # Preparing expression mt
 logcounts_df <- as.data.frame(logcounts) %>%
   rownames_to_column(var = "gene")
@@ -106,7 +106,7 @@ tf_sufficient <- names(tf_target_counts[tf_target_counts >= 5])
 ```
 
 
-```{r, message=FALSE}
+```{r, ulm message=FALSE}
 # Calculate TF Activity Using ULM
 # Make sure dplyr is loaded
 library(dplyr)
@@ -178,7 +178,7 @@ tf_info <- significant_TFs %>%
 
 Analysis of the complete expression matrix. Heatmap shows the activity of the top `r n_tfs` transcription factors across samples, grouped by ulceration status.
 
-```{r, fig.width=12, fig.height=12, message=FALSE}
+```{r, tf_act fig.width=12, fig.height=12, message=FALSE}
 # Create annotation df for samples
 annotation_row <- metadata %>%
   select(sample_id, ulceration) %>%
@@ -245,7 +245,7 @@ print(tf_heatmap)
 
 Activity inference using Univariate Linear Model (ULM) on differential expression results. DecoupleR fits a linear model that predicts the observed gene expression based on the TF's TF-Gene interaction weights. The t-value of the slope is used as the activity score.
 
-```{r, message=FALSE}
+```{r, tf_barplot message=FALSE}
 # Load differential expression results
 results_DE <- readRDS(here("data", "DE_results.rds"))
 
@@ -307,8 +307,6 @@ TF_sorted <- TF_act_ulc %>%
 # Filter 
 TF_visualization <- TF_act_ulc %>% 
   filter(source %in% TF_sorted)
-
-#saveRDS(TF_visualization, "top25_TFs_ulceration_vis.rds")
 ```
 
 
