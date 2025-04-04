@@ -7,4 +7,5 @@ editor_options:
   chunk_output_type: console
 ---
 
-Describe your project.
+This repository contains code used in the project *"The microenvironment of ulcerated acral melanoma is characterised by an inflammatory milieu and an enhanced humoural immune response"*. 
+
