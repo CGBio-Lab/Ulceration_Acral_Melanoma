@@ -40,7 +40,7 @@ library(here)
 
 ## 2C - 2D - GSEA
 
-```{r, fig.width=10, fig.height=10, message=FALSE}
+```{r, gsea fig.width=10, fig.height=10, message=FALSE}
 # Data loading
 # Load differential expression results pre-ranked for GSEA
 ranked_GSEA <- readRDS("data/DE_results_ranked.rds")
@@ -83,7 +83,7 @@ go_BP_df <- (as.data.frame(gsea_BP))
 # write_csv(go_BP_df, "results/GSEA_analysis_BP.csv")
 ```
 
-```{r, fig.width=10, fig.height=9, message=FALSE}
+```{r, visualization fig.width=10, fig.height=9, message=FALSE}
 # --- Visualization ---
 # Dotplot showing activated and repressed pathways
 dotplot_gsea <- dotplot(
@@ -144,7 +144,7 @@ print(enrichment_plots)
 
 ## Pathway Analysis
 
-```{r, fig.width=13, fig.height=10, message=FALSE}
+```{r, progeny fig.width=13, fig.height=10, message=FALSE}
 # Data Preparation
 
 # Extract t-statistic 
@@ -207,9 +207,6 @@ progeny_plot <- ggplot(progeny_df, aes(x = reorder(pathway, normalized_score),
   )
 
 progeny_plot
-
-# Save results
-#write.csv(progeny_df, "results/PROGENy_pathway_results.csv")
 
 #ggsave("figures/PROGENy_pathway_activity.pdf", 
 #       progeny_plot, 
