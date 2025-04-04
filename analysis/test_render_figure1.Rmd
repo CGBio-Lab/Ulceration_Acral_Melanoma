@@ -1,0 +1,361 @@
+---
+title: "Ulceration Figure1"
+author: "Estef Vazquez"
+date: "`r Sys.Date()`"
+output: workflowr::wflow_html
+editor_options:
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+# Figure 1. Clinical characteristics of acral melanoma patients according to ulceration status
+
+The following code creates visualizations comparing clinical features between ulcerated and non-ulcerated acral melanomas. It generates box plots for age and mitotic index, violin plot for Breslow depth, stacked bar plots for stage and recurrence, and a combined panel.
+
+```{r}
+# Load required libraries
+library(tidyverse)
+library(patchwork)
+library(ggpubr)
+library(here)
+
+# Set seed 
+set.seed(123)
+
+# Load metadata from 59 patients with complete ulceration status
+metadata <- read.csv(here("data", "clinical_am_prim.csv"))
+
+# Convert to factors
+metadata <- metadata %>%
+  mutate(across(c(-breslow_depth_mm, -mitotic_index, -age, -sample_id, -patient), as.factor))
+```
+
+### 1A - Age
+
+```{r, fig.width=12, fig.height=10}
+
+# Boxplot ulceration vs age
+ulc_age_plot <- ggplot(data = metadata,
+       mapping = aes(x = factor(ulceration), y = age, 
+                     fill = factor(ulceration))) + 
+  geom_boxplot(na.rm = TRUE,
+               width = 0.4,
+               alpha = 0.9,
+               outlier.shape = NA,
+               color = "black"        
+               ) + 
+  geom_point(size = 2.5, alpha = 0.5, 
+             position = position_jitter(seed = 1, width = 0.1),
+             color = "black") + 
+  stat_summary(fun = mean, 
+              geom = "point",
+              shape = 23, 
+              size = 1.3,
+              fill = "white",
+              color = "black") +
+  stat_compare_means(size = 4, label.x = 1.34) + 
+  scale_fill_manual(values=c("#730769", "#E8CC03"),
+                    labels = c("No", "Yes")) + 
+  scale_x_discrete(labels = c("0" = "No", "1" = "Yes")) +
+  theme_minimal() +
+   theme(
+    plot.title = element_text(size = 12, face = "bold", hjust = 0.5),
+    axis.title = element_text(size = 11, face = "bold"),
+    axis.text = element_text(size = 11, color = "black"),
+    legend.title = element_text(size = 11, face = "bold"),
+    legend.text = element_text(size = 11),
+    legend.position = "right",  
+    # Background elements
+    panel.background = element_blank(),
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(color = "black"),
+    plot.margin = margin(20, 20, 20, 20)
+  ) +
+  labs(
+    x = "Ulceration status", 
+    y = "Age at diagnosis",
+    title = "Age Distribution by Ulceration Status",
+     fill = "Ulceration"
+  ) +
+  scale_y_continuous(
+    limits = function(x) c(floor(min(x)), ceiling(max(x))),
+    expand = expansion(mult = c(0.05, 0.05))
+  ) + coord_cartesian(xlim = c(0.5, 2.5)) 
+
+ulc_age_plot
+
+
+```
+
+### 1B - Breslow Depth
+
+```{r, fig.width=12, fig.height=10}
+
+# Violin plot ulceration vs breslow depth 
+ulc_bres_plot <- ggplot(metadata, 
+            aes(x = factor(ulceration), 
+                y = breslow_depth_mm, 
+                fill = factor(ulceration))) + 
+  geom_violin(trim = FALSE) +
+  geom_boxplot(width = 0.1,
+               alpha = 0.7,
+               color = "black") +
+  stat_summary(fun = mean, 
+               geom = "point", 
+               shape = 23, size = 2,
+               color = "black") +
+    stat_compare_means(size = 3.9, label.x = 1.36) +
+  scale_fill_manual(values = c("#730769", "#E8CC03"),
+                    labels = c("No", "Yes")) +
+  scale_x_discrete(labels = c("0" = "No", "1" = "Yes")) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold", hjust = 0.5),
+    axis.title = element_text(size = 11, face = "bold"),
+    axis.text = element_text(size = 11, color = "black"),
+    legend.title = element_text(size = 11, face = "bold"),
+    legend.text = element_text(size = 11),
+    legend.position = "right",  
+    panel.background = element_blank(),
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(color = "black"),
+    plot.margin = margin(20, 20, 20, 20)
+  ) +
+  labs(
+    x = "Ulceration status",
+    y = "Breslow depth (mm)",
+    title = "Ulceration Status and Breslow Depth",
+    fill = "Ulceration"
+  ) +
+  scale_y_continuous(
+    limits = function(x) c(floor(min(x)), ceiling(max(x))),
+    expand = expansion(mult = c(0.05, 0.05))
+  )
+ulc_bres_plot
+
+#ggsave("ulceration_breslow.pdf", height=8, width=7, dpi=400)
+
+
+```
+
+### 1C - Mitotic Index
+
+```{r, fig.width=12, fig.height=10}
+
+# Boxplot ulceration vs Mitotic Index
+ulc_mit_plot <- ggplot(data = metadata,
+       mapping = aes(x = factor(ulceration), y = mitotic_index, 
+                     fill = factor(ulceration))) + 
+  geom_boxplot(na.rm = TRUE,
+               width = 0.4,
+               alpha = 0.9,
+               outlier.shape = NA,
+               color = "black",       
+               position = position_dodge(width = 0.5)) + 
+  geom_point(size = 2.5, alpha = 0.5, 
+             position = position_jitter(seed = 1, width = 0.1),
+             color = "black") + 
+  
+  stat_summary(fun = mean, 
+              geom = "point",
+              shape = 23, 
+              size = 1.5,
+              fill = "white",
+              color = "black") +
+  
+  stat_compare_means(size = 4,
+                       label.x = 1.33) + 
+    theme_minimal() +
+    theme(
+    plot.title = element_text(size = 12, face = "bold", hjust = 0.5),
+    axis.title = element_text(size = 11, face = "bold"),
+    axis.text = element_text(size = 11, color = "black"),
+    legend.title = element_text(size = 11, face = "bold"),
+    legend.text = element_text(size = 11),
+    legend.position = "right",  
+    panel.background = element_blank(),
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(color = "black"),
+    plot.margin = margin(20, 20, 20, 20)
+  ) +
+  scale_fill_manual(values=c("#730769", "#E8CC03"),
+                    labels = c("No", "Yes")) + 
+  scale_x_discrete(labels = c("0" = "No", "1" = "Yes")) +
+  labs(
+    x = "Ulceration Status", 
+    y = "Mitotic Index",
+    title = "Mitotic Index by Ulceration Status",
+    fill = "Ulceration"
+  ) +
+  scale_y_continuous(
+    limits = function(x) c(floor(min(x)), ceiling(max(x))),
+    expand = expansion(mult = c(0.05, 0.05))
+  )
+ulc_mit_plot
+
+
+ggsave("ulceration_mitotic.pdf", height=8, width=8, dpi=400)
+
+```
+
+### 1D - Tumor Stage
+
+```{r, fig.width=12, fig.height=10}
+ulc_stage_plot <- ggplot(metadata, 
+       aes(x = stage, 
+           fill = factor(ulceration))) +
+  geom_bar(position = "stack",
+           alpha = 0.8) +
+  scale_fill_manual(values = c("#730769", "#E8CC03"),
+                    labels = c("No", "Yes")) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold", hjust = 0.5),
+    axis.title = element_text(size = 11, face = "bold"),
+    axis.text = element_text(size = 10, angle = 0),
+    legend.title = element_text(size = 11, face = "bold"),
+    legend.text = element_text(size = 11),
+    legend.position = "right",
+    panel.background = element_blank(),
+    plot.background = element_blank(),
+    panel.grid = element_blank(),
+    axis.line = element_line(color = "black")
+  ) +
+  labs(
+    x = "Stage",
+    y = "Number of Cases",
+    title = "Ulceration Status Across Tumor Stages",
+    fill = "Ulceration"
+  )
+ulc_stage_plot
+
+#ggsave("ulceration_stage.pdf", height=8, width=7, dpi=400)
+
+```
+
+### Tumor recurrence
+
+```{r, fig.width=12, fig.height=10}
+ggplot(metadata, 
+       aes(x = factor(ulceration), fill = factor(recurrence))) + 
+  
+  geom_bar(position = "fill",
+           width = 0.7,
+           alpha = 0.8) +
+  geom_text(aes(label = scales::percent(after_stat(count)/sum(after_stat(count)), 
+                                      accuracy = 1)),
+            stat = "count",
+            position = position_fill(vjust = 0.5),
+            color = "white",
+            size = 4) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_manual(values = c("#E8CC03", "#730769"),
+                    labels = c("No", "Yes")) +
+  scale_x_discrete(labels = c("0" = "No", "1" = "Yes")) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(size = 10, hjust = 0.5),
+    axis.title = element_text(size = 11, face = "bold"),
+    axis.text = element_text(size = 10, color = "black"),
+    legend.title = element_text(size = 10, face = "bold"),
+    legend.text = element_text(size = 9),
+    panel.background = element_blank(),
+    plot.background = element_blank(),
+    panel.grid = element_blank(),
+    axis.line = element_line(color = "black"),
+    plot.margin = margin(20, 20, 20, 20)
+  ) +
+  labs(
+    x = "Ulceration Status",
+    y = "Proportion of Cases",
+    title = "Recurrence in Ulcerated vs Non-ulcerated Tumours",
+    subtitle = paste("Total cases:", nrow(metadata)),
+    fill = "Recurrence"
+  )
+
+
+```
+
+### Panel
+
+```{r, fig.width=12, fig.height=10}
+
+# Combine plots into a single panel
+ulc_age_plot <- ulc_age_plot + 
+  theme(plot.margin = margin(10, 10, 10, 10, "pt"),
+        aspect.ratio = 0.9) +
+  coord_cartesian(clip = "off")
+
+ulc_bres_plot <- ulc_bres_plot + 
+  theme(plot.margin = margin(10, 10, 10, 10, "pt"),
+        aspect.ratio = 0.9) +
+  coord_cartesian(clip = "off")
+
+ulc_mit_plot <- ulc_mit_plot + 
+  theme(plot.margin = margin(10, 10, 10, 10, "pt"),
+        aspect.ratio = 0.9) +
+  coord_cartesian(clip = "off")
+
+ulc_stage_plot <- ulc_stage_plot + 
+  theme(plot.margin = margin(10, 10, 10, 10, "pt"),
+        aspect.ratio = 0.9)
+
+
+ulc_age_plot <- ulc_age_plot + theme(legend.position = "none")
+ulc_bres_plot <- ulc_bres_plot + theme(legend.position = "none")
+ulc_mit_plot <- ulc_mit_plot + theme(legend.position = "none")
+ulc_stage_plot <- ulc_stage_plot + theme(legend.position = "none")
+
+
+dummy_plot <- ggplot(metadata, aes(x = factor(ulceration), fill = factor(ulceration))) +
+  geom_bar() +
+  scale_fill_manual(values = c("#730769", "#E8CC03"),
+                   labels = c("No", "Yes"),
+                   name = "Ulceration") + theme_minimal()
+
+legend <- cowplot::get_legend(dummy_plot + theme(legend.position = "bottom"))
+
+
+grid_no_legend <- gridExtra::arrangeGrob(
+  ulc_age_plot, ulc_bres_plot,
+  ulc_mit_plot, ulc_stage_plot,
+  ncol = 2,
+  nrow = 2,
+  top = ""
+)
+
+# Create final grid 
+final_grid <- gridExtra::arrangeGrob(
+  grid_no_legend, 
+  legend,
+  ncol = 1,
+  heights = c(10, 1)
+)
+
+final_grid_with_labels <- cowplot::ggdraw(final_grid) +
+  cowplot::draw_grob(final_grid) +
+  cowplot::draw_label("a", x = 0.02, y = 0.98, size = 18, fontface = "bold") +
+  cowplot::draw_label("b", x = 0.52, y = 0.97, size = 18, fontface = "bold") +
+  cowplot::draw_label("c", x = 0.02, y = 0.48, size = 18, fontface = "bold") +
+  cowplot::draw_label("d", x = 0.52, y = 0.48, size = 18, fontface = "bold")
+
+final_grid_with_labels
+
+
+# Save plot
+ggsave("ulceration_combined_panel.pdf", final_grid_with_labels, 
+       height = 10, width = 12, dpi = 400)
+```
+
+```{r}
+sessionInfo()
+```

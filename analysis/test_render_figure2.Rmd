@@ -1,0 +1,316 @@
+---
+title: "Ulceration Figure 2"
+author: "Estef Vazquez"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+# Figure 2. Differential expression analysis
+
+This document incorporates differential expression analysis and PCA, in relation to ulceration status in acral melanoma samples. 
+It generates visualizations including PCA and volcano plots.
+
+```{r}
+# Load required libraries
+library(tidyverse)
+library(DESeq2)
+library(factoextra)
+library(RColorBrewer) 
+library(ggrepel) 
+library(plotly)
+library(here)
+```
+
+```{r, echo=FALSE}
+# Load metadata from 59 patients with complete ulceration status
+metadata <- read.csv(here("data", "clinical_am_prim.csv"))
+
+# Convert to factors
+metadata <- metadata %>%
+  mutate(across(c(-breslow_depth_mm, -mitotic_index, -age, -sample_id, -patient), as.factor))
+```
+
+
+```{r, fig.width=12, fig.height=10, message=FALSE}
+# Data Preparation
+
+# Subset metadata to include only relevant columns for the analysis
+exp_design <- metadata %>% dplyr::select(sample_id, batch_number, sex, age, ulceration)
+
+# Load raw count data
+cts <- readRDS("data/rawcounts_am.rds")
+
+# Scale age 
+exp_design$age_scaled <- scale(exp_design$age)
+
+# Evaluate ulceration effect while accounting for batch, sex, and age 
+dds <- DESeqDataSetFromMatrix(
+  countData = cts,
+  colData = exp_design, 
+  design = ~ batch_number + age_scaled + sex + ulceration,
+  tidy = FALSE
+)
+
+# Estimate size factors
+dds <- estimateSizeFactors(dds)
+
+# Pre-filtering 
+keep <- rowSums( counts(dds, normalized = TRUE) >= 10 ) >=20
+dds <- dds[keep,]
+
+# Set reference level for ulceration
+dds$ulceration <- relevel(dds$ulceration, ref = "0")
+
+# Extract normalized counts 
+normalized_counts_deseq <- counts(dds, normalized=TRUE)
+
+# Run DE
+dds_ulc <- DESeq(dds)
+dim(dds_ulc)
+
+# Apply apeglm shrinkage 
+resLFC <- lfcShrink(dds_ulc, coef="ulceration_1_vs_0", type="apeglm")
+
+# Extract results with ulceration 1 vs 0 contrast
+res <- results(dds_ulc, contrast = c("ulceration", "1", "0"), alpha = 0.05)
+
+
+# Variance stabilizing transformation for visualization
+vsd <- vst(dds_ulc, blind=FALSE) 
+
+# Processing results
+# Order by LFC 
+resOrdered <- res[order(res$log2FoldChange),]
+ranked_GSEA <- as.data.frame(resOrdered) #add gene symbols  
+
+# Save
+saveRDS(ranked_GSEA, "DE_results_ulceration_ranked.rds")
+
+# Extract significant genes 
+sig_genes <- subset(res, padj < 0.05)
+
+# Order significant genes by fold change
+LFC_ordered <-( sig_genes[ order( sig_genes$log2FoldChange ), ] )
+LFC_ordered_df <- as.data.frame(LFC_ordered)
+
+# Prepare results with gene IDs 
+res_ids <- as.data.frame(res) %>% 
+  rownames_to_column(var = "ENSEMBL_GENE_ID")
+
+# Load gene annotation mapping
+gene_ann <- readRDS("data/annotation.rds")
+
+# Join results
+res_final <- inner_join(res_ids, gene_ann, by="ENSEMBL_GENE_ID") %>% 
+  relocate(external_gene_name, .after = ENSEMBL_GENE_ID) 
+
+# Make unique rownames 
+names <- make.unique(res_final$external_gene_name)
+rownames(res_final) <- names
+
+# Order complete results by LFC
+res_final_ordered_LFC <- ( res_final[ order( res_final$log2FoldChange ), ] )
+
+# Process significant genes with gene symbols
+significant_genes_ids <- LFC_ordered_df %>%
+  rownames_to_column(var = "ENSEMBL_GENE_ID")
+
+# Join with gene symbols
+significant_genes_final <- inner_join(significant_genes_ids, gene_ann, by="ENSEMBL_GENE_ID") %>% 
+  relocate(external_gene_name, .after = ENSEMBL_GENE_ID) 
+
+# Make unique row names 
+names <- make.unique(significant_genes_final$external_gene_name)
+rownames(significant_genes_final) <- names
+
+# Save 
+# saveRDS(significant_genes_final, "DE_results_significant.rds") 
+# write_csv(significant_genes_final, "DE_results_significant.csv")
+
+```
+
+```{r, echo=FALSE, message=FALSE}
+#MA plot
+#plotMA(dds_ulc, ylim=c(-3,3))
+#plotMA(resLFC, ylim=c(-5,5))
+#dev.copy2pdf(file = "MAplot_shrunkenLFC.pdf")
+
+# plot the log2fold changes as a function of expression
+#plotMA(res,alpha = 0.05)
+#abline(h=c(-2,2),col = "blue")
+#dev.copy2pdf(file = "MAplot.pdf") 
+
+# Dispersion estimates
+#plotDispEsts(dds_ulc) 
+#dev.copy2pdf(file = "dispersion_estimates.pdf")
+
+```
+
+## 2A - Principal Component Analysis
+
+```{r}
+# PCA with top 1000 highly variable genes
+pcaData <- plotPCA(vsd, intgroup=c("ulceration"), 
+                   ntop=1000, 
+                   returnData=TRUE)
+
+# Extract variance percentages
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+
+# Create plot
+ggplot(pcaData, aes(x = PC1, y = PC2, color = group)) +
+  geom_point(size = 3) + 
+  theme_bw() +
+  scale_color_manual(
+    values = c("#730769", "#E8CC03"),
+    name = "Ulceration Status",
+    labels = c("No", "Yes")
+  ) +  
+  theme(
+    legend.position = "right",
+    panel.grid.minor = element_blank(),
+    axis.title = element_text(size = 12, face = "bold"),
+    legend.title = element_text(size = 11, face = "bold"),
+    legend.text = element_text(size = 10)
+  ) +
+  ggtitle("PCA Plot of Gene Expression by Ulceration Status") +
+  xlab(paste0("PC1 (", percentVar[1], "% variance)")) +
+  ylab(paste0("PC2 (", percentVar[2], "% variance)"))
+
+```
+
+## 2B - Volcano Plot
+
+```{r, fig.width=12, fig.height=10}
+# Theme 
+theme_set(theme_classic(base_size = 20) +
+  theme(
+    axis.title.y = element_text(face = "bold", margin = margin(0, 20, 0, 0), size = rel(1.1), color = 'black'),
+    axis.title.x = element_text(hjust = 0.5, face = "bold", margin = margin(20, 0, 0, 0), size = rel(1.1), color = 'black'),
+    plot.title = element_text(hjust = 0.5)
+  ))
+
+# Create and save plot
+create_volcano_plot <- function(data, 
+                               fc_threshold = 1.5,
+                               padj_threshold = 0.05,
+                               ylim = c(0, 10),
+                               xlim = c(-6, 6),
+                               top_genes = 100,
+                               output_file = NULL,
+                               italic_labels = TRUE) {
+  
+  # Classify genes by expression
+  data$diffexpressed <- "NO"
+  data$diffexpressed[data$log2FoldChange > fc_threshold & data$padj < padj_threshold] <- "UP"
+  data$diffexpressed[data$log2FoldChange < -fc_threshold & data$padj < padj_threshold] <- "DOWN"
+  
+  # Label top differentially expressed genes
+  data$delabel <- ifelse(
+    data$external_gene_name %in% head(data[order(data$padj), "external_gene_name"], top_genes),
+    data$external_gene_name, 
+    NA
+  )
+
+  plot <- ggplot(data = data, 
+                aes(x = log2FoldChange, 
+                    y = -log10(padj), 
+                    col = diffexpressed, 
+                    label = delabel)) +
+    # Add reference lines
+    geom_vline(xintercept = c(-fc_threshold, fc_threshold), col = "gray", linetype = 'dashed') +
+    geom_hline(yintercept = -log10(padj_threshold), col = "gray", linetype = 'dashed') + 
+    geom_point(size = 2.5) + 
+    scale_color_manual(
+      values = c("#00AFBB", "grey", "#bb0c00"),
+      labels = c("Downregulated", "Not significant", "Upregulated")
+    ) +
+    coord_cartesian(ylim = ylim, xlim = xlim) +
+    labs(
+      color = 'DE Genes',
+      x = expression("log"[2]*"FC"), 
+      y = expression("-log"[10]*"padj")
+    ) + 
+    scale_x_continuous(breaks = seq(-10, 10, 2)) +
+    ggtitle('Ulcerated vs Non-ulcerated Acral Melanoma') +
+    geom_text_repel(
+      max.overlaps = Inf,
+      fontface = if(italic_labels) "italic" else "plain"
+    )
+  
+    if (!is.null(output_file)) {
+    pdf(file = output_file, width = 13, height = 12)
+    print(plot)
+    dev.off()
+  }
+  
+  return(plot)
+}
+
+# Generate final plot
+volcanoplot <- create_volcano_plot(
+  data = res_final_ordered_LFC,
+  fc_threshold = 1.5,
+  padj_threshold = 0.05,
+  ylim = c(0, 10),
+  xlim = c(-6, 6),
+  top_genes = 100,
+  italic_labels = TRUE,
+  output_file = "volcanoplot.pdf"
+)
+
+volcanoplot
+
+
+```
+
+## Interactive Volcano
+```{r, fig.width=9, fig.height=7}
+dat <- tibble(genename = (res_final$external_gene_name),
+              x = res_final$log2FoldChange,
+              y = -log10(res_final$padj),
+              col = ifelse(res_final$padj < 0.05 & res_final$log2FoldChange > 1.5, "Upregulated",
+                    ifelse(res_final$padj < 0.05 & res_final$log2FoldChange < -1.5, "Downregulated", "Non-significant")))
+
+fig <- plot_ly(dat, x = ~x, y = ~y, 
+               color = ~col,
+               colors = c("Downregulated" = "#00AFBB", "Non-significant" = "grey", "Upregulated" = "#bb0c00"),
+               text = ~genename, 
+               hoverinfo = "text", 
+               type = "scatter", 
+               mode = "markers")
+
+fig <- fig %>% 
+  layout(plot_bgcolor = 'white',
+         paper_bgcolor = 'white',
+         xaxis = list(title = 'Log2 fold change',
+                     range = c(-6, 6),
+                     zeroline = FALSE),
+         yaxis = list(title = '-Log10 Padj',
+                     range = c(0, 10)),
+         legend = list(title = list(text = '<b> Genes </b>'),
+                      traceorder = "reversed")) 
+
+fig <- fig %>% 
+  layout(
+    legend = list(
+      title = list(text = '<b> Genes </b>'),
+      traceorder = "normal"
+    )
+  )
+
+fig
+```
+
+```{r}
+sessionInfo()
+```

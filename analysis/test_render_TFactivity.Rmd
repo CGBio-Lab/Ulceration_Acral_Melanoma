@@ -1,0 +1,439 @@
+---
+title: "Ulceration Figure - 2 TF activity"
+author: "Estef Vazquez"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+---
+
+## Introduction
+
+This analysis uses decoupleR (Badia et al., 2022) to analyze transcription factor (TF) activity differences between ulcerated and non-ulcerated acral melanoma samples. 
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE}
+# Load required packages
+library(tidyverse)
+library(decoupleR)
+library(OmnipathR)
+library(pheatmap)
+library(ggrepel)
+library(RColorBrewer)
+library(here)
+```
+
+
+```{r, echo=FALSE, message=FALSE}
+# Load metadata from 59 patients with complete ulceration status
+metadata <- read.csv(here("data", "clinical_am_prim.csv"))
+
+# Convert to factors
+metadata <- metadata %>%
+  mutate(across(c(-breslow_depth_mm, -mitotic_index, -age, -sample_id, -patient), as.factor))
+```
+
+```{r, message=FALSE}
+# Data pre-processing
+cts <- readRDS(here("data", "rawcounts_am.rds"))
+cts <- as.matrix(cts)
+
+# Define filtering
+min_count_threshold <- 15
+
+# Filter genes with insufficient counts
+total_counts_per_gene <- rowSums(cts)
+filtered_genes <- cts[total_counts_per_gene >= min_count_threshold, ]
+
+# Check that number of samples matches metadata
+stopifnot(ncol(filtered_genes) == nrow(metadata))
+
+# Load normalized counts and convert to log2 scale
+normalized_counts <- readRDS(here("data", "normalized_counts.rds"))
+logcounts <- log2(normalized_counts + 1)
+```
+
+```{r}
+# Preparing expression mt
+# Convert to df with gene identifiers
+logcounts_df <- as.data.frame(logcounts) %>%
+  rownames_to_column(var = "gene")
+
+# Replace NAs with zeros and format 
+counts_input <- logcounts_df %>% 
+  dplyr::mutate_if(~ any(is.na(.x)), ~ if_else(is.na(.x), 0, .x)) %>% 
+  column_to_rownames(var = "gene") %>% 
+  as.matrix()
+
+# Convert to df for ID mapping
+counts_input <- as.data.frame(counts_input) %>%
+  rownames_to_column(var = "ENSEMBL_GENE_ID")
+
+# Load gene annotation for ID mapping
+gene_ann <- readRDS(here("data", "annotation.rds"))
+
+# Join and format
+counts_input <- counts_input %>%
+  inner_join(gene_ann, by = "ENSEMBL_GENE_ID") %>%
+  relocate(external_gene_name, .after = ENSEMBL_GENE_ID)
+
+# Set row names
+names <- make.unique(counts_input$external_gene_name)
+rownames(counts_input) <- names
+counts_input <- counts_input[, -1] 
+counts_input <- counts_input[, -1] 
+```
+
+```{r load-tf-network}
+#Load TF network
+# Load CollecTRI network
+net <- readRDS(here("data", "collectri_network_omnipath.rds"))
+#net = get_collectri(organism='human', split_complexes=FALSE)
+
+# Check overlap between gene sets
+gene_in_counts <- rownames(counts_input)
+gene_in_network <- unique(net$target)
+overlap <- intersect(gene_in_counts, gene_in_network)
+
+# Check how many TFs have at least 5 targets
+tf_target_counts <- table(net$source[net$target %in% gene_in_counts])
+tf_sufficient <- names(tf_target_counts[tf_target_counts >= 5])
+```
+
+
+```{r, message=FALSE}
+# Calculate TF Activity Using ULM
+# Make sure dplyr is loaded
+library(dplyr)
+
+# Run univariate linear model on expression matrix
+TF_act_mat <- decoupleR::run_ulm(mat = counts_input, 
+                                  net = net, 
+                                  .source = 'source', 
+                                  .target = 'target',
+                                  .mor = 'mor', 
+                                  minsize = 5)
+
+
+# Add adjusted p-values
+TF_act_mat <- TF_act_mat %>%
+  group_by(source) %>%
+  mutate(padj = p.adjust(p_value, method = "BH"))
+
+# Filter significant TFs and rank by score direction
+significant_TFs <- TF_act_mat %>%
+  filter(padj < 0.05) %>%  
+  group_by(source) %>%
+  summarise(
+    mean_score = mean(score),
+    padj = dplyr::first(padj)  
+  ) %>%
+  mutate(
+    rnk = NA,
+    msk = mean_score > 0
+  )
+
+# Rank positive and negative scores separately
+significant_TFs$rnk[significant_TFs$msk] <- rank(-significant_TFs$mean_score[significant_TFs$msk])
+significant_TFs$rnk[!significant_TFs$msk] <- rank(-abs(significant_TFs$mean_score[!significant_TFs$msk]))
+
+# Select top TFs based on ranking
+n_tfs <- 50
+top_tf <- significant_TFs %>%
+  arrange(rnk) %>%
+  head(n_tfs) %>%
+  pull(source)
+
+# Create matrix of TF activities
+TF_act_mat_wide <- TF_act_mat %>%
+  filter(source %in% top_tf) %>%  
+  tidyr::pivot_wider(
+    id_cols = 'condition', 
+    names_from = 'source',
+    values_from = 'score'
+  ) %>%
+  tibble::column_to_rownames('condition') %>%
+  as.matrix()
+
+# Standardize data (convert to z-scores)
+final_tfs <- scale(TF_act_mat_wide)
+final_tfs <- as.data.frame(final_tfs)
+
+# Make matrix
+final_tfs_mat <- as.matrix(final_tfs)
+
+# Prepare summary table - add info about direction of effect and significance
+tf_info <- significant_TFs %>%
+  filter(source %in% top_tf) %>%
+  arrange(rnk) %>%
+  dplyr::select(source, mean_score, padj, rnk)
+```
+
+## 2E - TF activity Heatmap 
+
+This heatmap shows the activity of the top `r n_tfs` transcription factors across samples, grouped by ulceration status.
+
+```{r, fig.width=12, fig.height=12, message=FALSE}
+# Complete matrix analysis
+
+# Create annotation df for samples
+annotation_row <- metadata %>%
+  select(sample_id, ulceration) %>%
+  as.data.frame() %>%
+  # Make sure sample_id values match rownames in final_tfs
+  filter(sample_id %in% rownames(final_tfs)) %>%
+  column_to_rownames('sample_id') %>%
+  mutate(ulceration = factor(ulceration,
+                            levels = c("1", "0"),
+                            labels = c("Ulcerated", "Non-ulcerated")))
+
+
+# Verify annotation matches the data
+cat("Annotation dimensions:", dim(annotation_row)[1], "samples x", dim(annotation_row)[2], "features\n")
+cat("All annotation samples are in the TF activity matrix:", all(rownames(annotation_row) %in% rownames(final_tfs)), "\n")
+cat("All TF activity matrix samples are in the annotation:", all(rownames(final_tfs) %in% rownames(annotation_row)), "\n")
+
+# Color palette
+colors <- rev(RColorBrewer::brewer.pal(n = 11, name = "RdBu"))
+colors.use <- grDevices::colorRampPalette(colors = colors)(100)
+
+# Define breaks 
+my_breaks <- c(seq(-2, 0, length.out = ceiling(100 / 2) + 1),
+               seq(0.05, 2, length.out = floor(100 / 2)))
+
+# Define colors for annotation
+ann_colors <- list(
+  ulceration = c(
+    "Ulcerated" = "#E8CC03",  
+    "Non-ulcerated" = "#730769"
+  )
+)
+
+# Check if any column contains non-numeric values
+tf_heatmap <- pheatmap::pheatmap(
+  mat = final_tfs_mat,
+  color = colors.use,
+  border_color = "white",
+  breaks = my_breaks,
+  annotation_row = annotation_row,
+  annotation_colors = ann_colors,
+  cellwidth = 8,
+  cellheight = 8,
+  treeheight_row = 10,
+  treeheight_col = 10,
+  fontsize_row = 8,
+  fontsize_col = 8,
+  show_rownames = TRUE,
+  show_colnames = TRUE,
+  annotation_names_row = TRUE,
+  annotation_legend = TRUE,
+  main = "Transcription Factor Activity by Ulceration Status",
+  annotation_legend_param = list(title = "Ulceration\nStatus"),
+  annotation_names_rot = 0,
+  annotation_width = unit(2, "cm"),
+  annotation_names_side = "left",
+  fontsize = 10,
+  annotation_names_size = 12
+)
+
+print(tf_heatmap)
+```
+
+## 2F - TF activity Barplot 
+
+Activity inference using Univariate Linear Model (ULM) on differential expression results. DecoupleR fits a linear model that predicts the observed gene expression based on the TF's TF-Gene interaction weights. The t-value of the slope is used as the activity score.
+
+```{r, message=FALSE}
+# Load differential expression results
+results_DE <- readRDS(here("data", "DE_results.rds"))
+
+# Extract statistics and filter
+deg <- results_DE %>%
+  dplyr::select(log2FoldChange, stat, padj) %>% 
+  filter(!is.na(stat)) %>% 
+  filter(!is.na(padj))
+
+# Sort based on t-statistic
+deg <- deg[order(deg$stat), ]
+
+# Add gene identifiers
+gene_ann <- readRDS(here("data", "annotation.rds"))
+
+deg <- deg %>% 
+  rownames_to_column(var = "ENSEMBL_GENE_ID") %>%
+  inner_join(gene_ann, by = "ENSEMBL_GENE_ID") %>%
+  relocate(external_gene_name, .after = ENSEMBL_GENE_ID)
+
+# Set gene symbols as row names
+names <- make.unique(deg$external_gene_name)
+rownames(deg) <- names
+
+# Run ULM on DE t-statistic
+TF_act_ulc <- run_ulm(
+  mat = deg[, 'stat', drop = FALSE], 
+  net = net, 
+  .source = 'source', 
+  .target = 'target', 
+  .mor = 'mor', 
+  minsize = 5
+)
+
+# Add adjusted p-values and filter significant TFs
+significant_TFs_adjusted <- TF_act_ulc %>%
+  mutate(padj = p.adjust(p_value, method = "BH")) %>%
+  filter(padj < 0.05)
+
+# Save significant TFs 
+# write_csv(significant_TFs_adjusted, "significant_TFs_ulceration.csv")
+
+# Add ranking
+TF_act_ulc <- significant_TFs_adjusted %>% 
+  mutate(rnk = NA)
+
+# Rank TFs by score (positive and negative separately)
+msk <- TF_act_ulc$score > 0
+TF_act_ulc[msk, 'rnk'] <- rank(-TF_act_ulc[msk, 'score']) 
+TF_act_ulc[!msk, 'rnk'] <- rank(-abs(TF_act_ulc[!msk, 'score'])) 
+
+# Select top TFs for visualization
+n_tfs_vis <- 25
+TF_sorted <- TF_act_ulc %>% 
+  arrange(rnk) %>%
+  head(n_tfs_vis) %>% 
+  pull(source)  
+
+# Filter 
+TF_visualization <- TF_act_ulc %>% 
+  filter(source %in% TF_sorted)
+
+#saveRDS(TF_visualization, "top25_TFs_ulceration_vis.rds")
+```
+
+
+```{r, warning=FALSE, message=FALSE}
+#colors <- rev(RColorBrewer::brewer.pal(n = 11, name = "RdBu")[c(2, 10)])
+# Barplot of top differential TFs 
+p1 <- ggplot(TF_visualization, aes(x = reorder(source, score), y = score)) + 
+  geom_bar(aes(fill = score > 0), stat = "identity") +  # Discrete coloring based on sign
+  scale_fill_manual(
+    values = c("#0571b0", "#ca0020"),  # Blue for FALSE (negative), Red for TRUE (positive)
+    labels = c("Repressed", "Activated"),
+    name = "Activity"
+  ) + 
+  theme_minimal() +
+  theme(
+    axis.title = element_text(face = "bold", size = 12),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 10, face = "bold"),
+    axis.text.y = element_text(size = 10, face = "bold"),
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    legend.position = "right"
+  ) +
+  xlab("Transcription Factors") + 
+  ylab("Activity Score") +
+  ggtitle("Top 25 Significant TFs in Ulcerated Acral Melanoma")
+
+print(p1)
+```
+
+## Relationship between ZEB1 targets and their differential expression
+
+```{r, warning=FALSE, message=FALSE}
+# Define TF
+tf <- 'ZEB1'
+
+# Filter for ZEB1 targets
+df <- net %>%
+  filter(source == tf) %>%
+  arrange(target) %>%
+  mutate(ID = target, color = "3") %>%
+  column_to_rownames('target')
+
+# Find overlapping genes between DEGs and ZEB1 targets
+inter <- sort(intersect(rownames(deg), rownames(df)))
+df <- df[inter, ]
+
+# Rename DEG columns 
+deg_formatted <- deg %>%
+  dplyr::select(log2FoldChange, stat, padj) %>%
+  dplyr::rename(
+    logfc = log2FoldChange,
+    t_value = stat,
+    pval = padj
+  )
+
+# Add DE statistics to df
+df[, c('logfc', 't_value', 'pval')] <- deg_formatted[inter, c('logfc', 't_value', 'pval')]
+
+# Color based on consistency between mode of regulation and observed changes (t-value)
+df <- df %>%
+  dplyr::mutate(color = dplyr::if_else(mor > 0 & t_value > 0, '1', color)) %>%
+  dplyr::mutate(color = dplyr::if_else(mor > 0 & t_value < 0, '2', color)) %>%
+  dplyr::mutate(color = dplyr::if_else(mor < 0 & t_value > 0, '2', color)) %>%
+  dplyr::mutate(color = dplyr::if_else(mor < 0 & t_value < 0, '1', color))
+
+# Define color scheme
+colors <- rev(RColorBrewer::brewer.pal(n = 11, name = "RdBu")[c(2, 10)])
+
+# Create plot
+p2 <- ggplot2::ggplot(
+  data = df, 
+  mapping = ggplot2::aes(
+    x = logfc, 
+    y = -log10(pval), 
+    color = color,
+    size = abs(mor)
+  )
+) + 
+  ggplot2::geom_point(size = 2.5, color = "black") + 
+  ggplot2::geom_point(size = 1.5) +
+  ggplot2::scale_colour_manual(
+    values = c(colors[2], colors[1], "grey"),
+    name = "Regulation",
+    labels = c("Consistent", "Inconsistent", "Unknown")
+  ) +
+  ggrepel::geom_label_repel(
+    mapping = ggplot2::aes(
+      label = ID,
+      size = 1
+    ),
+    max.overlaps = 20,
+    box.padding = 0.5,
+    label.padding = 0.2,
+    min.segment.length = 0
+  ) + 
+  ggplot2::theme_minimal() +
+  ggplot2::theme(
+    legend.position = "right",
+    plot.title = element_text(face = "bold", size = 14),
+    axis.title = element_text(face = "bold", size = 12)
+  ) +
+  ggplot2::geom_vline(xintercept = 0, linetype = 'dotted') +
+  ggplot2::geom_hline(yintercept = 0, linetype = 'dotted') +
+  ggplot2::labs(
+    title = paste0(tf, " Target Genes in Ulcerated vs. Non-Ulcerated Acral Melanoma"),
+    x = "log2 Fold Change",
+    y = "-log10(p-value)",
+    size = "Regulation Strength"
+  ) +
+  guides(size = guide_legend(title = "Regulation Strength"))
+
+print(p2)
+```
+
+
+This plot shows ZEB1 target genes and their differential expression pattern in ulcerated vs non-ulcerated acral tumours. Point size represents the predicted strength of ZEB1's influence on each gene. Red points show genes that respond as expected to ZEB1 activity. Blue points show genes that respond opposite to how we'd expect based on ZEB1 activity
+
+
+```{r}
+sessionInfo()
+```
+
+

@@ -1,0 +1,231 @@
+---
+title: "Ulceration Figure 2 GSEA"
+author: "Estef Vazquez"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+```{r, echo=FALSE}
+options(connectionObserver = NULL)
+```
+
+```{r, echo=FALSE}
+# Set color scheme for plots
+ulcer_colors <- c("#bb0c00", "#00AFBB") 
+options(enrichplot.colours = ulcer_colors)
+```
+
+This script performs Gene Set Enrichment Analysis using GO terms and PROGENy to identify pathway activity in ulcerated vs non-ulcerated acral melanoma samples.
+
+```{r}
+library(tidyverse)  
+library(clusterProfiler)
+library(enrichplot)
+library(DOSE)
+library(biomaRt)
+library(org.Hs.eg.db)
+library(progeny)
+library(decoupleR)
+library(here)
+```
+
+## GSEA
+
+```{r, fig.width=10, fig.height=10, message=FALSE}
+# Data loading
+# Load differential expression results pre-ranked for GSEA
+ranked_GSEA <- readRDS("data/DE_results_ranked.rds")
+ranked_GSEA <- rownames_to_column(ranked_GSEA, var = "ENSEMBL_GENE_ID")
+
+# Load gene annotation
+gene_ann <- readRDS("data/annotation.rds")
+#gene_ann <- rownames_to_column(gene_ann, var = "ENSEMBL_GENE_ID")
+
+# Add gene symbols
+ranked_idmatch <- inner_join(ranked_GSEA, gene_ann, by="ENSEMBL_GENE_ID")
+
+# Make rownames unique
+names <- make.unique(ranked_idmatch$external_gene_name)
+rownames(ranked_idmatch) <- names
+
+# Extract LFC and create a named vector for GSEA
+geneList_FC <- ranked_idmatch[,3]
+names(geneList_FC) <- as.character(ranked_idmatch[,1]) # Use ENSEMBL IDs as names
+
+# Sort gene list in decreasing order by LFC
+geneList_FC_ordered <- sort(geneList_FC, decreasing = TRUE)
+
+# ---GSEA Analysis ---
+# Perform Gene Set Enrichment Analysis using GO Biological Process 
+gsea_BP <- gseGO(geneList = geneList_FC_ordered, 
+             ont ="BP", 
+             keyType = "ENSEMBL", 
+             minGSSize = 3, 
+             maxGSSize = 800, 
+             pvalueCutoff = 0.05, 
+             verbose = TRUE, 
+             OrgDb = org.Hs.eg.db,
+             pAdjustMethod = "BH",
+             eps = 0) 
+
+# Convert to data frame 
+go_BP_df <- (as.data.frame(gsea_BP))
+
+# saveRDS(gsea_BP, "results/GSEA_BP_results.rds")
+# write_csv(go_BP_df, "results/GSEA_analysis_BP.csv")
+```
+
+```{r, fig.width=10, fig.height=9, message=FALSE}
+# --- Visualization ---
+# Dotplot showing activated and repressed pathways
+dotplot_gsea <- dotplot(
+  gsea_BP, 
+  showCategory = 10,       
+  split = ".sign",          
+  font.size = 6            
+) + 
+  facet_grid(.~.sign) +    
+  ggtitle("GSEA analysis") +
+  theme_classic()
+
+print(dotplot_gsea)
+
+
+# NES plot for top enriched terms
+top_results <- go_BP_df[1:11, ]
+library(stringr)
+top_results$Description <- str_wrap(top_results$Description, width = 40)
+
+nes_plot <- ggplot(top_results, aes(x = NES, y = reorder(Description, NES))) +
+  geom_point(aes(color = NES, size = setSize)) +
+  scale_color_gradient2(
+    low = ulcer_colors[2],  
+    mid = "white",           
+    high = ulcer_colors[1],   
+    midpoint = 0,           
+    name = "NES Score"
+  ) +
+  labs(
+    x = "Normalized Enrichment Score",
+    y = NULL,
+    title = "Gene Set Enrichment Analysis (GSEA)",
+    subtitle = "Top enriched GO terms",
+    size = "Gene Set Size"
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.y = element_text(size = 10),
+    axis.text.x = element_text(size = 11),
+    axis.title.x = element_text(size = 14),
+    plot.title = element_text(size = 16, hjust = 0.5)
+  )
+
+print(nes_plot)
+
+
+# GSEA enrichment plot - most up and down-regulated gene sets
+top_indices <- c(which.max(gsea_BP@result$NES), which.min(gsea_BP@result$NES))
+enrichment_plots <- gseaplot2(
+  gsea_BP, 
+  geneSetID = top_indices,
+  color = ulcer_colors)
+
+print(enrichment_plots)
+```
+
+
+## Pathway Analysis
+
+```{r, fig.width=13, fig.height=10, message=FALSE}
+# Data Preparation
+
+# Load ranked gene list 
+#ranked_GSEA <- readRDS("DE_results_ulceration_ranked.rds")
+#ranked_GSEA <- rownames_to_column(ranked_GSEA, var = "ENSEMBL_GENE_ID")
+
+# Extract t-statistic 
+gene_stats <- ranked_idmatch[, 5] 
+names(gene_stats) <- ranked_idmatch$external_gene_name
+
+# Get the PROGENy weight matrix
+progeny_matrix <- getModel(organism = "Human", top = 100)
+
+# Find common genes between data and the model
+common_genes <- intersect(names(gene_stats), rownames(progeny_matrix))
+
+# Subset genes
+progeny_matrix_subset <- progeny_matrix[common_genes, , drop = FALSE]
+gene_stats_subset <- gene_stats[common_genes]
+
+# Calculate pathway scores using mt multiplication
+pathway_scores <- t(progeny_matrix_subset) %*% gene_stats_subset
+
+# Convert to tidy df
+progeny_df <- data.frame(
+  pathway = rownames(pathway_scores),
+  score = as.numeric(pathway_scores),
+  stringsAsFactors = FALSE
+)
+
+# Normalize (Z-score) 
+progeny_df$normalized_score <- scale(progeny_df$score)[,1]
+
+# Sort by absolute score to keep most important pathways at top
+progeny_df <- progeny_df %>%
+  arrange(desc(abs(normalized_score)))
+
+
+# --- Visualization ---
+
+# Plot results
+progeny_plot <- ggplot(progeny_df, aes(x = reorder(pathway, normalized_score), 
+                                       y = normalized_score, 
+                                       fill = normalized_score > 0)) +
+  geom_bar(stat = "identity", color = "black", width = 0.7) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
+  scale_fill_manual(values = c("#00AFBB", "#bb0c00"), 
+                   labels = c("Inhibited", "Activated"),
+                   name = "Pathway Status") +
+  coord_flip() +
+  labs(x = "Signaling Pathway", 
+       y = "Normalized Activity Score", 
+       title = "PROGENy Pathway Analysis - Ulcerated vs Non-ulcerated tumors") +
+  theme_classic() +
+  theme(
+    axis.title = element_text(size = 14, face = "bold"),
+    axis.text = element_text(size = 12),
+    axis.text.y = element_text(face = "bold", color = "black"),
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(size = 14, hjust = 0.5, margin = margin(b = 20)),
+    legend.title = element_text(size = 12, face = "bold"),
+    legend.text = element_text(size = 11),
+    legend.position = "bottom",
+    plot.margin = margin(t = 20, r = 20, b = 20, l = 20)
+  )
+
+progeny_plot
+
+# Save results
+#write.csv(progeny_df, "results/PROGENy_pathway_results.csv")
+
+#ggsave("figures/PROGENy_pathway_activity.pdf", 
+#       progeny_plot, 
+#       width = 12, 
+#       height = 10, 
+#       dpi = 300)
+
+```
+
+```{r}
+sessionInfo()
+```
+
