@@ -11,9 +11,9 @@
 
 <meta name="author" content="Estef Vazquez" />
 
-<meta name="date" content="2025-04-03" />
+<meta name="date" content="2025-04-04" />
 
-<title>Ulceration Figure 2 GSEA</title>
+<title>Figure 2 - GSEA</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -35,6 +35,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -231,6 +232,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -326,7 +330,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">ulceration_paper_workflowr</a>
+      <a class="navbar-brand" href="index.html"># Ulceration_AM</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -349,11 +353,19 @@ div.tocify {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
-<h1 class="title toc-ignore">Ulceration Figure 2 GSEA</h1>
+
+<h1 class="title toc-ignore">Figure 2 - GSEA</h1>
 <h4 class="author">Estef Vazquez</h4>
-<h4 class="date">2025-04-03</h4>
+<h4 class="date">2025-04-04</h4>
 
 </div>
 
@@ -382,7 +394,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-04-03
+<strong>Last updated:</strong> 2025-04-04
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -513,13 +525,13 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongca58350">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong1644b9e">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> ca58350
+aria-hidden="true"></span> <strong>Repository version:</strong> 1644b9e
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongca58350"
+<div id="strongRepositoryversionstrong1644b9e"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -528,7 +540,7 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version ca58350.
+The results in this page were generated with repository version 1644b9e.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -561,6 +573,8 @@ Untracked files:
     Untracked:  volcanoplot.pdf
 
 Unstaged changes:
+    Modified:   README.md
+    Modified:   analysis/_site.yml
     Deleted:    analysis/teeth.Rmd
     Deleted:    data/teeth.csv
 
@@ -612,6 +626,40 @@ Message
 Rmd
 </td>
 <td>
+1644b9e
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-04
+</td>
+<td>
+Update
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+5c68f52
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-03
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 ca58350
 </td>
 <td>
@@ -631,7 +679,7 @@ Publish transcriptomic analyses
 </div>
 </div>
 </div>
-<p>This script performs Gene Set Enrichment Analysis using GO terms and
+<p>We perform Gene Set Enrichment Analysis (GSEA) using GO terms and
 PROGENy to identify pathway activity in ulcerated vs non-ulcerated acral
 melanoma samples.</p>
 <pre class="r"><code>library(tidyverse)  
@@ -643,8 +691,8 @@ library(org.Hs.eg.db)
 library(progeny)
 library(decoupleR)
 library(here)</code></pre>
-<div id="gsea" class="section level2">
-<h2>GSEA</h2>
+<div id="c---2d---gsea" class="section level2">
+<h2>2C - 2D - GSEA</h2>
 <pre class="r"><code># Data loading
 # Load differential expression results pre-ranked for GSEA
 ranked_GSEA &lt;- readRDS(&quot;data/DE_results_ranked.rds&quot;)
@@ -668,7 +716,7 @@ names(geneList_FC) &lt;- as.character(ranked_idmatch[,1]) # Use ENSEMBL IDs as n
 # Sort gene list in decreasing order by LFC
 geneList_FC_ordered &lt;- sort(geneList_FC, decreasing = TRUE)
 
-# ---GSEA Analysis ---
+# ---GSEA ---
 # Perform Gene Set Enrichment Analysis using GO Biological Process 
 gsea_BP &lt;- gseGO(geneList = geneList_FC_ordered, 
              ont =&quot;BP&quot;, 
@@ -681,7 +729,6 @@ gsea_BP &lt;- gseGO(geneList = geneList_FC_ordered,
              pAdjustMethod = &quot;BH&quot;,
              eps = 0) 
 
-# Convert to data frame 
 go_BP_df &lt;- (as.data.frame(gsea_BP))
 
 # saveRDS(gsea_BP, &quot;results/GSEA_BP_results.rds&quot;)
@@ -700,6 +747,43 @@ dotplot_gsea &lt;- dotplot(
 
 print(dotplot_gsea)</code></pre>
 <p><img src="figure/test_render_GSEA_TF.Rmd/unnamed-chunk-5-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+5c68f52
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-03
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># NES plot for top enriched terms
 top_results &lt;- go_BP_df[1:11, ]
 library(stringr)
@@ -731,6 +815,43 @@ nes_plot &lt;- ggplot(top_results, aes(x = NES, y = reorder(Description, NES))) 
 
 print(nes_plot)</code></pre>
 <p><img src="figure/test_render_GSEA_TF.Rmd/unnamed-chunk-5-2.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-2">
+Past versions of unnamed-chunk-5-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+5c68f52
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-03
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># GSEA enrichment plot - most up and down-regulated gene sets
 top_indices &lt;- c(which.max(gsea_BP@result$NES), which.min(gsea_BP@result$NES))
 enrichment_plots &lt;- gseaplot2(
@@ -740,14 +861,47 @@ enrichment_plots &lt;- gseaplot2(
 
 print(enrichment_plots)</code></pre>
 <p><img src="figure/test_render_GSEA_TF.Rmd/unnamed-chunk-5-3.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-3">
+Past versions of unnamed-chunk-5-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+5c68f52
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-03
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="pathway-analysis" class="section level2">
 <h2>Pathway Analysis</h2>
 <pre class="r"><code># Data Preparation
-
-# Load ranked gene list 
-#ranked_GSEA &lt;- readRDS(&quot;DE_results_ulceration_ranked.rds&quot;)
-#ranked_GSEA &lt;- rownames_to_column(ranked_GSEA, var = &quot;ENSEMBL_GENE_ID&quot;)
 
 # Extract t-statistic 
 gene_stats &lt;- ranked_idmatch[, 5] 
@@ -783,7 +937,6 @@ progeny_df &lt;- progeny_df %&gt;%
 
 # --- Visualization ---
 
-# Plot results
 progeny_plot &lt;- ggplot(progeny_df, aes(x = reorder(pathway, normalized_score), 
                                        y = normalized_score, 
                                        fill = normalized_score &gt; 0)) +
@@ -811,6 +964,43 @@ progeny_plot &lt;- ggplot(progeny_df, aes(x = reorder(pathway, normalized_score)
 
 progeny_plot</code></pre>
 <p><img src="figure/test_render_GSEA_TF.Rmd/unnamed-chunk-6-1.png" width="1248" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
+Past versions of unnamed-chunk-6-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+5c68f52
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-03
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># Save results
 #write.csv(progeny_df, &quot;results/PROGENy_pathway_results.csv&quot;)
 
@@ -1036,6 +1226,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {

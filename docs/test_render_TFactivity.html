@@ -11,9 +11,9 @@
 
 <meta name="author" content="Estef Vazquez" />
 
-<meta name="date" content="2025-04-03" />
+<meta name="date" content="2025-04-04" />
 
-<title>Ulceration Figure - 2 TF activity</title>
+<title>Figure 2 - TF activity</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -35,6 +35,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -231,6 +232,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -326,7 +330,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">ulceration_paper_workflowr</a>
+      <a class="navbar-brand" href="index.html"># Ulceration_AM</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -349,11 +353,19 @@ div.tocify {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
-<h1 class="title toc-ignore">Ulceration Figure - 2 TF activity</h1>
+
+<h1 class="title toc-ignore">Figure 2 - TF activity</h1>
 <h4 class="author">Estef Vazquez</h4>
-<h4 class="date">2025-04-03</h4>
+<h4 class="date">2025-04-04</h4>
 
 </div>
 
@@ -382,7 +394,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-04-03
+<strong>Last updated:</strong> 2025-04-04
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -513,13 +525,13 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongca58350">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong1644b9e">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> ca58350
+aria-hidden="true"></span> <strong>Repository version:</strong> 1644b9e
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongca58350"
+<div id="strongRepositoryversionstrong1644b9e"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -528,7 +540,7 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version ca58350.
+The results in this page were generated with repository version 1644b9e.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -561,6 +573,8 @@ Untracked files:
     Untracked:  volcanoplot.pdf
 
 Unstaged changes:
+    Modified:   README.md
+    Modified:   analysis/_site.yml
     Deleted:    analysis/teeth.Rmd
     Deleted:    data/teeth.csv
 
@@ -608,6 +622,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+1644b9e
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-04
+</td>
+<td>
+Update
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+5c68f52
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-03
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -663,7 +711,6 @@ stopifnot(ncol(filtered_genes) == nrow(metadata))
 normalized_counts &lt;- readRDS(here(&quot;data&quot;, &quot;normalized_counts.rds&quot;))
 logcounts &lt;- log2(normalized_counts + 1)</code></pre>
 <pre class="r"><code># Preparing expression mt
-# Convert to df with gene identifiers
 logcounts_df &lt;- as.data.frame(logcounts) %&gt;%
   rownames_to_column(var = &quot;gene&quot;)
 
@@ -690,8 +737,7 @@ names &lt;- make.unique(counts_input$external_gene_name)
 rownames(counts_input) &lt;- names
 counts_input &lt;- counts_input[, -1] 
 counts_input &lt;- counts_input[, -1] </code></pre>
-<pre class="r"><code>#Load TF network
-# Load CollecTRI network
+<pre class="r"><code># Loading TF network
 net &lt;- readRDS(here(&quot;data&quot;, &quot;collectri_network_omnipath.rds&quot;))
 #net = get_collectri(organism=&#39;human&#39;, split_complexes=FALSE)
 
@@ -700,7 +746,7 @@ gene_in_counts &lt;- rownames(counts_input)
 gene_in_network &lt;- unique(net$target)
 overlap &lt;- intersect(gene_in_counts, gene_in_network)
 
-# Check how many TFs have at least 5 targets
+# How many TFs have at least 5 targets
 tf_target_counts &lt;- table(net$source[net$target %in% gene_in_counts])
 tf_sufficient &lt;- names(tf_target_counts[tf_target_counts &gt;= 5])</code></pre>
 <pre class="r"><code># Calculate TF Activity Using ULM
@@ -756,7 +802,7 @@ TF_act_mat_wide &lt;- TF_act_mat %&gt;%
   tibble::column_to_rownames(&#39;condition&#39;) %&gt;%
   as.matrix()
 
-# Standardize data (convert to z-scores)
+# Standardize (convert to z-scores)
 final_tfs &lt;- scale(TF_act_mat_wide)
 final_tfs &lt;- as.data.frame(final_tfs)
 
@@ -771,11 +817,10 @@ tf_info &lt;- significant_TFs %&gt;%
 </div>
 <div id="e---tf-activity-heatmap" class="section level2">
 <h2>2E - TF activity Heatmap</h2>
-<p>This heatmap shows the activity of the top 50 transcription factors
-across samples, grouped by ulceration status.</p>
-<pre class="r"><code># Complete matrix analysis
-
-# Create annotation df for samples
+<p>Analysis of the complete expression matrix. Heatmap shows the
+activity of the top 50 transcription factors across samples, grouped by
+ulceration status.</p>
+<pre class="r"><code># Create annotation df for samples
 annotation_row &lt;- metadata %&gt;%
   select(sample_id, ulceration) %&gt;%
   as.data.frame() %&gt;%
@@ -802,7 +847,7 @@ colors.use &lt;- grDevices::colorRampPalette(colors = colors)(100)
 my_breaks &lt;- c(seq(-2, 0, length.out = ceiling(100 / 2) + 1),
                seq(0.05, 2, length.out = floor(100 / 2)))
 
-# Define colors for annotation
+# Colors annotation
 ann_colors &lt;- list(
   ulceration = c(
     &quot;Ulcerated&quot; = &quot;#E8CC03&quot;,  
@@ -810,7 +855,6 @@ ann_colors &lt;- list(
   )
 )
 
-# Check if any column contains non-numeric values
 tf_heatmap &lt;- pheatmap::pheatmap(
   mat = final_tfs_mat,
   color = colors.use,
@@ -839,6 +883,43 @@ tf_heatmap &lt;- pheatmap::pheatmap(
 
 print(tf_heatmap)</code></pre>
 <p><img src="figure/test_render_TFactivity.Rmd/unnamed-chunk-6-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
+Past versions of unnamed-chunk-6-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+5c68f52
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-03
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="f---tf-activity-barplot" class="section level2">
 <h2>2F - TF activity Barplot</h2>
@@ -886,7 +967,7 @@ significant_TFs_adjusted &lt;- TF_act_ulc %&gt;%
   mutate(padj = p.adjust(p_value, method = &quot;BH&quot;)) %&gt;%
   filter(padj &lt; 0.05)
 
-# Save significant TFs 
+# Save 
 # write_csv(significant_TFs_adjusted, &quot;significant_TFs_ulceration.csv&quot;)
 
 # Add ranking
@@ -910,12 +991,11 @@ TF_visualization &lt;- TF_act_ulc %&gt;%
   filter(source %in% TF_sorted)
 
 #saveRDS(TF_visualization, &quot;top25_TFs_ulceration_vis.rds&quot;)</code></pre>
-<pre class="r"><code>#colors &lt;- rev(RColorBrewer::brewer.pal(n = 11, name = &quot;RdBu&quot;)[c(2, 10)])
-# Barplot of top differential TFs 
+<pre class="r"><code># Visualizing top TFs 
 p1 &lt;- ggplot(TF_visualization, aes(x = reorder(source, score), y = score)) + 
-  geom_bar(aes(fill = score &gt; 0), stat = &quot;identity&quot;) +  # Discrete coloring based on sign
+  geom_bar(aes(fill = score &gt; 0), stat = &quot;identity&quot;) +  
   scale_fill_manual(
-    values = c(&quot;#0571b0&quot;, &quot;#ca0020&quot;),  # Blue for FALSE (negative), Red for TRUE (positive)
+    values = c(&quot;#0571b0&quot;, &quot;#ca0020&quot;),  
     labels = c(&quot;Repressed&quot;, &quot;Activated&quot;),
     name = &quot;Activity&quot;
   ) + 
@@ -934,6 +1014,43 @@ p1 &lt;- ggplot(TF_visualization, aes(x = reorder(source, score), y = score)) +
 
 print(p1)</code></pre>
 <p><img src="figure/test_render_TFactivity.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
+Past versions of unnamed-chunk-8-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-8-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+5c68f52
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-03
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div
 id="relationship-between-zeb1-targets-and-their-differential-expression"
@@ -954,7 +1071,7 @@ df &lt;- net %&gt;%
 inter &lt;- sort(intersect(rownames(deg), rownames(df)))
 df &lt;- df[inter, ]
 
-# Rename DEG columns 
+# Rename columns 
 deg_formatted &lt;- deg %&gt;%
   dplyr::select(log2FoldChange, stat, padj) %&gt;%
   dplyr::rename(
@@ -966,17 +1083,16 @@ deg_formatted &lt;- deg %&gt;%
 # Add DE statistics to df
 df[, c(&#39;logfc&#39;, &#39;t_value&#39;, &#39;pval&#39;)] &lt;- deg_formatted[inter, c(&#39;logfc&#39;, &#39;t_value&#39;, &#39;pval&#39;)]
 
-# Color based on consistency between mode of regulation and observed changes (t-value)
+# Color based on consistency between mode of regulation and observed changes
 df &lt;- df %&gt;%
   dplyr::mutate(color = dplyr::if_else(mor &gt; 0 &amp; t_value &gt; 0, &#39;1&#39;, color)) %&gt;%
   dplyr::mutate(color = dplyr::if_else(mor &gt; 0 &amp; t_value &lt; 0, &#39;2&#39;, color)) %&gt;%
   dplyr::mutate(color = dplyr::if_else(mor &lt; 0 &amp; t_value &gt; 0, &#39;2&#39;, color)) %&gt;%
   dplyr::mutate(color = dplyr::if_else(mor &lt; 0 &amp; t_value &lt; 0, &#39;1&#39;, color))
 
-# Define color scheme
+# Defining color 
 colors &lt;- rev(RColorBrewer::brewer.pal(n = 11, name = &quot;RdBu&quot;)[c(2, 10)])
 
-# Create plot
 p2 &lt;- ggplot2::ggplot(
   data = df, 
   mapping = ggplot2::aes(
@@ -1021,6 +1137,43 @@ p2 &lt;- ggplot2::ggplot(
 
 print(p2)</code></pre>
 <p><img src="figure/test_render_TFactivity.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-1">
+Past versions of unnamed-chunk-9-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-9-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+5c68f52
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-04-03
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>This plot shows ZEB1 target genes and their differential expression
 pattern in ulcerated vs non-ulcerated acral tumours. Point size
 represents the predicted strength of ZEB1’s influence on each gene. Red
@@ -1210,6 +1363,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {
