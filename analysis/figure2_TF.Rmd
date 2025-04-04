@@ -19,7 +19,7 @@ This analysis uses decoupleR (Badia et al., 2022) to analyze transcription facto
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r, libraries, warning=FALSE}
+```{r, libraries, include=FALSE, warning=FALSE}
 # Load required packages
 library(tidyverse)
 library(decoupleR)
@@ -245,7 +245,7 @@ print(tf_heatmap)
 
 Activity inference using Univariate Linear Model (ULM) on differential expression results. DecoupleR fits a linear model that predicts the observed gene expression based on the TF's TF-Gene interaction weights. The t-value of the slope is used as the activity score.
 
-```{r, tf_barplot, message=FALSE}
+```{r, tf_prep, message=FALSE}
 # Load differential expression results
 results_DE <- readRDS(here("data", "DE_results.rds"))
 
@@ -310,7 +310,7 @@ TF_visualization <- TF_act_ulc %>%
 ```
 
 
-```{r, warning=FALSE, message=FALSE}
+```{r, tf_barplot, warning=FALSE, message=FALSE}
 # Visualizing top TFs 
 p1 <- ggplot(TF_visualization, aes(x = reorder(source, score), y = score)) + 
   geom_bar(aes(fill = score > 0), stat = "identity") +  
@@ -337,7 +337,7 @@ print(p1)
 
 ## Relationship between ZEB1 targets and their differential expression
 
-```{r, warning=FALSE, message=FALSE}
+```{r, targets, warning=FALSE, message=FALSE}
 # Define TF
 tf <- 'ZEB1'
 
