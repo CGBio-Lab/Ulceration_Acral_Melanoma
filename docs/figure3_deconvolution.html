@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Estef Vazquez" />
+
+<meta name="date" content="2025-05-05" />
+
+<title>Figure 3 - Deconvolution Analysis</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">ulceration_AM</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Figure 3 - Deconvolution Analysis</h1>
+<h4 class="author">Estef Vazquez</h4>
+<h4 class="date">2025-05-05</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2025-05-05
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>Ulceration_paper_github/</code>
+<span class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20250330code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20250330)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20250330code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20250330)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCGBioLabUlcerationAcralMelanomatreecb08ceda549f644e21130a1de8f27b7ce81b7855targetblankcb08ceda">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/CGBio-Lab/Ulceration_Acral_Melanoma/tree/cb08ceda549f644e21130a1de8f27b7ce81b7855" target="_blank">cb08ced</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomCGBioLabUlcerationAcralMelanomatreecb08ceda549f644e21130a1de8f27b7ce81b7855targetblankcb08ceda"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/CGBio-Lab/Ulceration_Acral_Melanoma/tree/cb08ceda549f644e21130a1de8f27b7ce81b7855" target="_blank">cb08ced</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rproj.user/
+    Ignored:    data/cibersort_res_ulc.rds
+    Ignored:    data/cibersort_res_ulc_lf.rds
+    Ignored:    omnipathr-log/
+    Ignored:    output/ulceration_combined_panel.pdf
+
+Untracked files:
+    Untracked:  .Rhistory
+
+Unstaged changes:
+    Modified:   .gitignore
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/figure3_deconvolution.Rmd</code>)
+and HTML (<code>docs/figure3_deconvolution.html</code>) files. If you’ve
+configured a remote Git repository (see <code>?wflow_git_remote</code>),
+click on the hyperlinks in the table below to view the files as they
+were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CGBio-Lab/Ulceration_Acral_Melanoma/blob/cb08ceda549f644e21130a1de8f27b7ce81b7855/analysis/figure3_deconvolution.Rmd" target="_blank">cb08ced</a>
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-05-05
+</td>
+<td>
+Loading deconv
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="immune-cell-type-composition-analysis" class="section level1">
+<h1>Immune Cell Type Composition Analysis</h1>
+<div id="loading-libraries-and-data" class="section level2">
+<h2>Loading Libraries and Data</h2>
+<pre class="r"><code># Load required libraries
+library(tidyverse)
+library(ggplot2)
+library(forcats)
+library(ggpubr) 
+library(here)
+
+
+# Load results
+cibersort &lt;- readRDS(here(&quot;data&quot;, &quot;cibersort_res_ulc_lf.rds&quot;))
+
+# Load combined data with ulceration status
+ciber_with_groups &lt;- readRDS(here(&quot;data&quot;, &quot;cibersort_res_ulc.rds&quot;))
+
+# Gather - long format
+ciber_gath &lt;- ciber_with_groups %&gt;%
+  pivot_longer(
+    cols = -c(sample_id, ulceration),  
+    names_to = &quot;cell_type&quot;,
+    values_to = &quot;proportion&quot;
+  )
+
+# Order cells by proportion
+ciber_gath &lt;- ciber_gath %&gt;% mutate(cell_type = fct_reorder(cell_type, proportion))
+
+# Order by plasma cell proportion within each group
+sample_order &lt;- ciber_gath %&gt;%
+  filter(cell_type == &quot;Plasma_cells&quot;) %&gt;%
+  arrange(ulceration, proportion) %&gt;%
+  pull(sample_id)
+
+# Set sample_id as factor with the new order
+ciber_ordered &lt;- ciber_gath %&gt;%
+  mutate(sample_id = factor(sample_id, levels = sample_order))</code></pre>
+<p>##Color Palettes</p>
+<pre class="r"><code># Color palette for cell types 
+immune_palette &lt;- c(
+  &#39;#00441B&#39;, &#39;#f29175&#39;, &#39;brown&#39;, &#39;#B299A7&#39;, &#39;blue&#39;, &#39;lightblue&#39;, &#39;olivedrab&#39;, &#39;orange&#39;, 
+  &#39;#3F007D&#39;, &#39;#8DA0CB&#39;, &#39;#CC0066&#39;, &quot;#CB181D&quot;, &#39;#74a9cf&#39;, &#39;pink&#39;, &#39;deeppink4&#39;, &#39;cadetblue1&#39;,
+  &#39;#241178&#39;, &#39;#66C2A5&#39;, &quot;#E78AC3&quot;, &quot;#FFD92F&quot;, &quot;#CA9E78&quot;, &quot;#3F007D&quot;
+)
+
+# Define colors
+ulceration_colors &lt;- list(
+  fill = c(&quot;0&quot; = &quot;#730769&quot;, &quot;1&quot; = &quot;#E8CC03&quot;), 
+  point = c(&quot;0&quot; = &quot;#4A044E&quot;, &quot;1&quot; = &quot;#938202&quot;)  
+)
+
+# Set theme
+publication_theme &lt;- theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14, face = &quot;bold&quot;, hjust = 0.5, margin = margin(b = 20)),
+    axis.title = element_text(size = 12, face = &quot;bold&quot;),
+    axis.text = element_text(size = 10, color = &quot;black&quot;),
+    legend.position = &quot;top&quot;,
+    legend.title = element_text(size = 10, face = &quot;bold&quot;),
+    legend.text = element_text(size = 9),
+    legend.margin = margin(t = 10, b = 10),
+    panel.grid = element_blank(),
+    plot.margin = margin(10, 20, 20, 10)
+  )</code></pre>
+</div>
+<div id="data-preparation" class="section level2">
+<h2>Data Preparation</h2>
+<pre class="r"><code># Transform wide data to long format
+prepare_long_format &lt;- function(data) {
+  # Check if data already contains cell_type and proportion columns
+  if(&quot;cell_type&quot; %in% colnames(data) &amp;&amp; &quot;proportion&quot; %in% colnames(data)) {
+    return(data)  # Already in long format
+  }
+  
+  # Check if ulceration column exists
+  if(&quot;ulceration&quot; %in% colnames(data)) {
+    # Transform wide to long, preserving ulceration
+    data %&gt;% pivot_longer(
+      cols = -c(sample_id, ulceration),
+      names_to = &quot;cell_type&quot;,
+      values_to = &quot;proportion&quot;
+    )
+  } else {
+    # Transform wide to long without ulceration
+    data %&gt;% pivot_longer(
+      cols = -sample_id,
+      names_to = &quot;cell_type&quot;,
+      values_to = &quot;proportion&quot;
+    )
+  }
+}
+
+# Order samples by cell type proportion
+order_samples &lt;- function(data, order_by_cell = &quot;Plasma_cells&quot;, group_by = NULL) {
+  # Ensure data is in long format
+  data_long &lt;- prepare_long_format(data)
+  
+  # Filter for specified cell type
+  cell_data &lt;- data_long %&gt;% filter(cell_type == order_by_cell)
+  
+  # Order samples differently based on whether grouping is needed
+  if(!is.null(group_by) &amp;&amp; group_by %in% colnames(data_long)) {
+    # Order within groups
+    sample_order &lt;- cell_data %&gt;%
+      arrange(!!sym(group_by), proportion) %&gt;%
+      pull(sample_id)
+  } else {
+    # Order overall
+    sample_order &lt;- cell_data %&gt;%
+      arrange(proportion) %&gt;%
+      pull(sample_id)
+  }
+  
+  # Return the original data with ordered sample_id
+  data_long %&gt;% mutate(sample_id = factor(sample_id, levels = sample_order))
+}
+
+# Function to prepare data for comparison of single cell types
+prepare_cell_data &lt;- function(data, cell_column) {
+  # Select only required columns
+  data %&gt;% 
+    select(sample_id, !!sym(cell_column), ulceration) %&gt;%
+    gather(key = &quot;cell_type&quot;, value = &quot;proportion&quot;, -sample_id, -ulceration)
+}</code></pre>
+</div>
+<div id="plotting" class="section level2">
+<h2>Plotting</h2>
+<pre class="r"><code># Function to create grouped stacked barplot by ulceration status
+plot_grouped_barplot &lt;- function(data, title = &quot;Immune Cell Composition by Ulceration Status&quot;) {
+  # Ensure data is in long format and ordered
+  if(!(&quot;ulceration&quot; %in% colnames(data))) {
+    stop(&quot;Data must contain &#39;ulceration&#39; column for grouped barplot&quot;)
+  }
+  
+  ggplot(data, aes(x = sample_id, y = proportion, fill = cell_type)) +
+    geom_col(position = &quot;fill&quot;, width = 0.8) +
+    scale_fill_manual(values = immune_palette) +
+    scale_y_continuous(labels = scales::percent, breaks = seq(0, 1, 0.2)) +
+    facet_grid(~ ulceration, scales = &quot;free_x&quot;, space = &quot;free_x&quot;,
+               labeller = labeller(ulceration = c(&quot;0&quot; = &quot;Non-ulcerated&quot;, &quot;1&quot; = &quot;Ulcerated&quot;))) +
+    labs(
+      title = title,
+      x = &quot;Samples&quot;,
+      y = &quot;Estimated Cell Proportion (CIBERSORTx)&quot;,
+      fill = &quot;Immune Cell Type&quot;
+    ) +
+    theme_minimal() +
+    theme(
+      plot.title = element_text(size = 14, face = &quot;bold&quot;, hjust = 0.5),
+      plot.subtitle = element_text(size = 12, hjust = 0.5),
+      axis.text.x = element_text(angle = 90, hjust = 1, size = 8),
+      axis.text.y = element_text(size = 10),
+      axis.title = element_text(size = 12, face = &quot;bold&quot;),
+      legend.title = element_text(size = 10, face = &quot;bold&quot;),
+      legend.text = element_text(size = 9),
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor = element_blank(),
+      strip.text = element_text(size = 12, face = &quot;bold&quot;),  # Group label formatting
+      strip.background = element_rect(fill = &quot;white&quot;),    
+      panel.spacing = unit(1, &quot;lines&quot;)                      # Space between groups
+    )
+}
+
+
+# Comparative boxplot for cell types
+plot_cell_boxplot &lt;- function(
+  data, 
+  cell_name,
+  y_max = NULL,     
+  y_increment = NULL 
+) {
+  if(is.null(y_max)) {
+    y_max &lt;- ceiling(max(data$proportion) * 1.2 * 100) / 100
+  }
+  
+  if(is.null(y_increment)) {
+    y_increment &lt;- y_max / 5
+  }
+  stat_pos &lt;- y_max * 0.8
+  
+  ggplot(data, aes(x = cell_type, y = proportion, fill = ulceration)) +
+    # Boxplot layer
+    geom_boxplot(
+      outlier.shape = NA,
+      width = 0.5,
+      alpha = 0.8
+    ) +
+    # Points layer with jitter
+    geom_point(
+      aes(color = ulceration),
+      size = 2,
+      alpha = 0.6,
+      position = position_jitterdodge(
+        jitter.width = 0.15,
+        dodge.width = 0.5,
+        seed = 123
+      )
+    ) +
+    # Colors
+    scale_fill_manual(
+      values = ulceration_colors$fill,
+      name = &quot;Ulceration Status&quot;,
+      labels = c(&quot;0&quot; = &quot;Non-ulcerated&quot;, &quot;1&quot; = &quot;Ulcerated&quot;)
+    ) +
+    scale_color_manual(
+      values = ulceration_colors$point,
+      guide = &quot;none&quot;
+    ) +
+    # Y-axis 
+    scale_y_continuous(
+      limits = c(0, y_max),
+      breaks = seq(0, y_max, by = y_increment),
+      labels = scales::number_format(accuracy = 0.01),
+      expand = expansion(mult = c(0.05, 0.1))
+    ) +
+    # Statistical test
+    stat_compare_means(
+      aes(group = ulceration),
+      label.y = stat_pos,
+      size = 4,
+      label = &quot;p.format&quot;,
+      label.x.npc = &quot;center&quot;
+    ) +
+    # Labels
+    labs(
+      title = paste0(cell_name, &quot; in Acral Melanoma&quot;),
+      y = &quot;Cell Proportion (CIBERSORTx)&quot;,
+      caption = &quot;Statistical test: Wilcoxon rank-sum test&quot;
+    ) +
+    # Apply theme
+    publication_theme +
+    theme(axis.text.x = element_text(angle = 0, hjust = 0.5))
+}</code></pre>
+</div>
+<div id="analysis-and-visualization" class="section level2">
+<h2>Analysis and Visualization</h2>
+<div id="immune-cell-composition-by-ulceration-status"
+class="section level3">
+<h3>Immune Cell Composition by Ulceration Status</h3>
+<pre class="r"><code># Create grouped barplot
+plot_grouped_barplot(
+  ciber_ordered,
+  title = &quot;Immune Cell Composition by Ulceration Status in Acral Melanoma&quot;
+)</code></pre>
+<p><img src="figure/figure3_deconvolution.Rmd/grouped-by-ulceration-1.png" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="analysis-of-immune-cell-types-by-ulceration-status"
+class="section level3">
+<h3>Analysis of Immune Cell Types by Ulceration Status</h3>
+</div>
+<div id="plasma-cells" class="section level3">
+<h3>Plasma Cells</h3>
+<pre class="r"><code>plasma_data &lt;- prepare_cell_data(ciber_with_groups, &quot;Plasma_cells&quot;)
+
+plot_cell_boxplot(
+  plasma_data,
+  &quot;Plasma Cells&quot;,
+  y_max = 1,
+  y_increment = 0.2
+)</code></pre>
+<p><img src="figure/figure3_deconvolution.Rmd/plasma-cells-analysis-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<div id="eosinophils" class="section level4">
+<h4>Eosinophils</h4>
+<pre class="r"><code>eosinophils_data &lt;- prepare_cell_data(ciber_with_groups, &quot;Eosinophils&quot;)
+
+plot_cell_boxplot(
+  eosinophils_data,
+  &quot;Eosinophils&quot;,
+  y_max = 0.2,  
+  y_increment = 0.02
+)</code></pre>
+<p><img src="figure/figure3_deconvolution.Rmd/eosinophils-analysis-1.png" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="macrophages-m0" class="section level4">
+<h4>Macrophages M0</h4>
+<pre class="r"><code>macrophages_m0_data &lt;- prepare_cell_data(ciber_with_groups, &quot;Macrophages_M0&quot;)
+
+plot_cell_boxplot(
+  macrophages_m0_data,
+  &quot;Macrophages M0&quot;,
+  y_max = 1,  
+  y_increment = 0.2
+)</code></pre>
+<p><img src="figure/figure3_deconvolution.Rmd/macrophages-m0-analysis-1.png" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+<div id="session-information" class="section level2">
+<h2>Session Information</h2>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.4.0 (2024-04-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 22.04.4 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0 
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=es_MX.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=es_MX.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=es_MX.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=es_MX.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: America/Mexico_City
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] here_1.0.1      ggpubr_0.6.0    lubridate_1.9.4 forcats_1.0.0  
+ [5] stringr_1.5.1   dplyr_1.1.4     purrr_1.0.2     readr_2.1.5    
+ [9] tidyr_1.3.1     tibble_3.2.1    ggplot2_3.5.1   tidyverse_2.0.0
+[13] workflowr_1.7.1
+
+loaded via a namespace (and not attached):
+ [1] gtable_0.3.6      xfun_0.49         bslib_0.8.0       processx_3.8.4   
+ [5] rstatix_0.7.2     callr_3.7.6       tzdb_0.4.0        vctrs_0.6.5      
+ [9] tools_4.4.0       ps_1.8.1          generics_0.1.3    pkgconfig_2.0.3  
+[13] lifecycle_1.0.4   compiler_4.4.0    farver_2.1.2      git2r_0.33.0     
+[17] munsell_0.5.1     getPass_0.2-4     carData_3.0-5     httpuv_1.6.15    
+[21] htmltools_0.5.8.1 sass_0.4.9        yaml_2.3.10       Formula_1.2-5    
+[25] later_1.4.1       pillar_1.10.0     car_3.1-3         jquerylib_0.1.4  
+[29] whisker_0.4.1     cachem_1.1.0      abind_1.4-5       tidyselect_1.2.1 
+[33] digest_0.6.37     stringi_1.8.4     rprojroot_2.0.4   fastmap_1.2.0    
+[37] grid_4.4.0        colorspace_2.1-1  cli_3.6.3         magrittr_2.0.3   
+[41] broom_1.0.7       withr_3.0.2       scales_1.3.0      promises_1.3.2   
+[45] backports_1.5.0   timechange_0.3.0  rmarkdown_2.29    httr_1.4.7       
+[49] ggsignif_0.6.4    hms_1.1.3         evaluate_1.0.1    knitr_1.49       
+[53] rlang_1.1.4       Rcpp_1.0.13-1     glue_1.8.0        rstudioapi_0.17.1
+[57] jsonlite_1.8.9    R6_2.5.1          fs_1.6.5         </code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.4.0 (2024-04-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 22.04.4 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0 
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=es_MX.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=es_MX.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=es_MX.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=es_MX.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: America/Mexico_City
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] here_1.0.1      ggpubr_0.6.0    lubridate_1.9.4 forcats_1.0.0  
+ [5] stringr_1.5.1   dplyr_1.1.4     purrr_1.0.2     readr_2.1.5    
+ [9] tidyr_1.3.1     tibble_3.2.1    ggplot2_3.5.1   tidyverse_2.0.0
+[13] workflowr_1.7.1
+
+loaded via a namespace (and not attached):
+ [1] gtable_0.3.6      xfun_0.49         bslib_0.8.0       processx_3.8.4   
+ [5] rstatix_0.7.2     callr_3.7.6       tzdb_0.4.0        vctrs_0.6.5      
+ [9] tools_4.4.0       ps_1.8.1          generics_0.1.3    pkgconfig_2.0.3  
+[13] lifecycle_1.0.4   compiler_4.4.0    farver_2.1.2      git2r_0.33.0     
+[17] munsell_0.5.1     getPass_0.2-4     carData_3.0-5     httpuv_1.6.15    
+[21] htmltools_0.5.8.1 sass_0.4.9        yaml_2.3.10       Formula_1.2-5    
+[25] later_1.4.1       pillar_1.10.0     car_3.1-3         jquerylib_0.1.4  
+[29] whisker_0.4.1     cachem_1.1.0      abind_1.4-5       tidyselect_1.2.1 
+[33] digest_0.6.37     stringi_1.8.4     rprojroot_2.0.4   fastmap_1.2.0    
+[37] grid_4.4.0        colorspace_2.1-1  cli_3.6.3         magrittr_2.0.3   
+[41] broom_1.0.7       withr_3.0.2       scales_1.3.0      promises_1.3.2   
+[45] backports_1.5.0   timechange_0.3.0  rmarkdown_2.29    httr_1.4.7       
+[49] ggsignif_0.6.4    hms_1.1.3         evaluate_1.0.1    knitr_1.49       
+[53] rlang_1.1.4       Rcpp_1.0.13-1     glue_1.8.0        rstudioapi_0.17.1
+[57] jsonlite_1.8.9    R6_2.5.1          fs_1.6.5         </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
