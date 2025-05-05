@@ -24,7 +24,7 @@ This repository includes R Markdown documents with step-by-step analyses, proces
 
 * [Figure 2. Transcription Factor activity inference](figure2_TF.html)
 
-* Figure 3. Immune Cell Type Composition
+* [Figure 3. Immune Cell Type Composition](figure3_deconvolution.html)
 
 * Figure 3. Proteomic Analyses
 
