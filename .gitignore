@@ -3,3 +3,4 @@ data/*.rds
 *.rds
 output/*.pdf
 omnipathr-log/
+.Rproj.user
