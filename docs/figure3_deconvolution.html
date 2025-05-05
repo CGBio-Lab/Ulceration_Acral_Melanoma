@@ -513,15 +513,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCGBioLabUlcerationAcralMelanomatree6cb2a2529a4885e0b35b9910c31eb2b64522c354targetblank6cb2a25a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomCGBioLabUlcerationAcralMelanomatreed6bee9befba9beac42a46b6e1b99814eae0a1211targetblankd6bee9ba">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/CGBio-Lab/Ulceration_Acral_Melanoma/tree/6cb2a2529a4885e0b35b9910c31eb2b64522c354" target="_blank">6cb2a25</a>
+<a href="https://github.com/CGBio-Lab/Ulceration_Acral_Melanoma/tree/d6bee9befba9beac42a46b6e1b99814eae0a1211" target="_blank">d6bee9b</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomCGBioLabUlcerationAcralMelanomatree6cb2a2529a4885e0b35b9910c31eb2b64522c354targetblank6cb2a25a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomCGBioLabUlcerationAcralMelanomatreed6bee9befba9beac42a46b6e1b99814eae0a1211targetblankd6bee9ba"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -531,7 +531,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/CGBio-Lab/Ulceration_Acral_Melanoma/tree/6cb2a2529a4885e0b35b9910c31eb2b64522c354" target="_blank">6cb2a25</a>.
+<a href="https://github.com/CGBio-Lab/Ulceration_Acral_Melanoma/tree/d6bee9befba9beac42a46b6e1b99814eae0a1211" target="_blank">d6bee9b</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -604,6 +604,40 @@ Message
 <tbody>
 <tr>
 <td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/CGBio-Lab/Ulceration_Acral_Melanoma/blob/d6bee9befba9beac42a46b6e1b99814eae0a1211/analysis/figure3_deconvolution.Rmd" target="_blank">d6bee9b</a>
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-05-05
+</td>
+<td>
+Update
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/CGBio-Lab/Ulceration_Acral_Melanoma/b4cc4b3b6d697b82152a6d49f5e3bd86799e9a64/docs/figure3_deconvolution.html" target="_blank">b4cc4b3</a>
+</td>
+<td>
+Estef Vazquez
+</td>
+<td>
+2025-05-05
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
 html
 </td>
 <td>
@@ -643,12 +677,11 @@ Loading deconv
 </div>
 </div>
 </div>
-<div id="immune-cell-type-composition-analysis" class="section level1">
-<h1>Immune Cell Type Composition Analysis</h1>
+<div id="immune-cell-type-composition" class="section level1">
+<h1>Immune Cell Type Composition</h1>
 <div id="loading-libraries-and-data" class="section level2">
 <h2>Loading Libraries and Data</h2>
-<pre class="r"><code># Load required libraries
-library(tidyverse)
+<pre class="r"><code>library(tidyverse)
 library(ggplot2)
 library(forcats)
 library(ggpubr) 
@@ -669,33 +702,29 @@ ciber_gath &lt;- ciber_with_groups %&gt;%
     values_to = &quot;proportion&quot;
   )
 
-# Order cells by proportion
+# Order by proportion
 ciber_gath &lt;- ciber_gath %&gt;% mutate(cell_type = fct_reorder(cell_type, proportion))
 
-# Order by plasma cell proportion within each group
 sample_order &lt;- ciber_gath %&gt;%
   filter(cell_type == &quot;Plasma_cells&quot;) %&gt;%
   arrange(ulceration, proportion) %&gt;%
   pull(sample_id)
 
-# Set sample_id as factor with the new order
 ciber_ordered &lt;- ciber_gath %&gt;%
   mutate(sample_id = factor(sample_id, levels = sample_order))</code></pre>
-<p>##Color Palettes</p>
-<pre class="r"><code># Color palette for cell types 
+<pre class="r"><code># Color palette 
 immune_palette &lt;- c(
   &#39;#00441B&#39;, &#39;#f29175&#39;, &#39;brown&#39;, &#39;#B299A7&#39;, &#39;blue&#39;, &#39;lightblue&#39;, &#39;olivedrab&#39;, &#39;orange&#39;, 
   &#39;#3F007D&#39;, &#39;#8DA0CB&#39;, &#39;#CC0066&#39;, &quot;#CB181D&quot;, &#39;#74a9cf&#39;, &#39;pink&#39;, &#39;deeppink4&#39;, &#39;cadetblue1&#39;,
   &#39;#241178&#39;, &#39;#66C2A5&#39;, &quot;#E78AC3&quot;, &quot;#FFD92F&quot;, &quot;#CA9E78&quot;, &quot;#3F007D&quot;
 )
 
-# Define colors
+# Define colors and theme
 ulceration_colors &lt;- list(
   fill = c(&quot;0&quot; = &quot;#730769&quot;, &quot;1&quot; = &quot;#E8CC03&quot;), 
   point = c(&quot;0&quot; = &quot;#4A044E&quot;, &quot;1&quot; = &quot;#938202&quot;)  
 )
 
-# Set theme
 publication_theme &lt;- theme_minimal() +
   theme(
     plot.title = element_text(size = 14, face = &quot;bold&quot;, hjust = 0.5, margin = margin(b = 20)),
@@ -711,16 +740,15 @@ publication_theme &lt;- theme_minimal() +
 </div>
 <div id="data-preparation" class="section level2">
 <h2>Data Preparation</h2>
-<pre class="r"><code># Transform wide data to long format
+<pre class="r"><code># Wide to long format
 prepare_long_format &lt;- function(data) {
-  # Check if data already contains cell_type and proportion columns
+  # Check if data contains required columns
   if(&quot;cell_type&quot; %in% colnames(data) &amp;&amp; &quot;proportion&quot; %in% colnames(data)) {
-    return(data)  # Already in long format
+    return(data)  
   }
   
-  # Check if ulceration column exists
   if(&quot;ulceration&quot; %in% colnames(data)) {
-    # Transform wide to long, preserving ulceration
+    # Wide to long preserving ulceration
     data %&gt;% pivot_longer(
       cols = -c(sample_id, ulceration),
       names_to = &quot;cell_type&quot;,
@@ -736,34 +764,31 @@ prepare_long_format &lt;- function(data) {
   }
 }
 
+
 # Order samples by cell type proportion
 order_samples &lt;- function(data, order_by_cell = &quot;Plasma_cells&quot;, group_by = NULL) {
-  # Ensure data is in long format
   data_long &lt;- prepare_long_format(data)
-  
   # Filter for specified cell type
   cell_data &lt;- data_long %&gt;% filter(cell_type == order_by_cell)
   
-  # Order samples differently based on whether grouping is needed
+  # Order samples 
   if(!is.null(group_by) &amp;&amp; group_by %in% colnames(data_long)) {
-    # Order within groups
+    #  within groups
     sample_order &lt;- cell_data %&gt;%
       arrange(!!sym(group_by), proportion) %&gt;%
       pull(sample_id)
   } else {
-    # Order overall
+    #  overall
     sample_order &lt;- cell_data %&gt;%
       arrange(proportion) %&gt;%
       pull(sample_id)
   }
   
-  # Return the original data with ordered sample_id
   data_long %&gt;% mutate(sample_id = factor(sample_id, levels = sample_order))
 }
 
-# Function to prepare data for comparison of single cell types
+# Prepare data for comparison of cell types
 prepare_cell_data &lt;- function(data, cell_column) {
-  # Select only required columns
   data %&gt;% 
     select(sample_id, !!sym(cell_column), ulceration) %&gt;%
     gather(key = &quot;cell_type&quot;, value = &quot;proportion&quot;, -sample_id, -ulceration)
@@ -771,9 +796,8 @@ prepare_cell_data &lt;- function(data, cell_column) {
 </div>
 <div id="plotting" class="section level2">
 <h2>Plotting</h2>
-<pre class="r"><code># Function to create grouped stacked barplot by ulceration status
+<pre class="r"><code># Grouped stacked barplot by ulceration 
 plot_grouped_barplot &lt;- function(data, title = &quot;Immune Cell Composition by Ulceration Status&quot;) {
-  # Ensure data is in long format and ordered
   if(!(&quot;ulceration&quot; %in% colnames(data))) {
     stop(&quot;Data must contain &#39;ulceration&#39; column for grouped barplot&quot;)
   }
@@ -801,14 +825,14 @@ plot_grouped_barplot &lt;- function(data, title = &quot;Immune Cell Composition 
       legend.text = element_text(size = 9),
       panel.grid.major.x = element_blank(),
       panel.grid.minor = element_blank(),
-      strip.text = element_text(size = 12, face = &quot;bold&quot;),  # Group label formatting
+      strip.text = element_text(size = 12, face = &quot;bold&quot;), 
       strip.background = element_rect(fill = &quot;white&quot;),    
-      panel.spacing = unit(1, &quot;lines&quot;)                      # Space between groups
+      panel.spacing = unit(1, &quot;lines&quot;)                      
     )
 }
 
 
-# Comparative boxplot for cell types
+# Boxplot
 plot_cell_boxplot &lt;- function(
   data, 
   cell_name,
@@ -825,13 +849,11 @@ plot_cell_boxplot &lt;- function(
   stat_pos &lt;- y_max * 0.8
   
   ggplot(data, aes(x = cell_type, y = proportion, fill = ulceration)) +
-    # Boxplot layer
     geom_boxplot(
       outlier.shape = NA,
       width = 0.5,
       alpha = 0.8
     ) +
-    # Points layer with jitter
     geom_point(
       aes(color = ulceration),
       size = 2,
@@ -842,7 +864,6 @@ plot_cell_boxplot &lt;- function(
         seed = 123
       )
     ) +
-    # Colors
     scale_fill_manual(
       values = ulceration_colors$fill,
       name = &quot;Ulceration Status&quot;,
@@ -852,14 +873,12 @@ plot_cell_boxplot &lt;- function(
       values = ulceration_colors$point,
       guide = &quot;none&quot;
     ) +
-    # Y-axis 
     scale_y_continuous(
       limits = c(0, y_max),
       breaks = seq(0, y_max, by = y_increment),
       labels = scales::number_format(accuracy = 0.01),
       expand = expansion(mult = c(0.05, 0.1))
     ) +
-    # Statistical test
     stat_compare_means(
       aes(group = ulceration),
       label.y = stat_pos,
@@ -867,19 +886,17 @@ plot_cell_boxplot &lt;- function(
       label = &quot;p.format&quot;,
       label.x.npc = &quot;center&quot;
     ) +
-    # Labels
     labs(
       title = paste0(cell_name, &quot; in Acral Melanoma&quot;),
       y = &quot;Cell Proportion (CIBERSORTx)&quot;,
       caption = &quot;Statistical test: Wilcoxon rank-sum test&quot;
     ) +
-    # Apply theme
     publication_theme +
     theme(axis.text.x = element_text(angle = 0, hjust = 0.5))
 }</code></pre>
 </div>
-<div id="analysis-and-visualization" class="section level2">
-<h2>Analysis and Visualization</h2>
+<div id="visualization" class="section level2">
+<h2>Visualization</h2>
 <div id="immune-cell-composition-by-ulceration-status"
 class="section level3">
 <h3>Immune Cell Composition by Ulceration Status</h3>
@@ -926,10 +943,6 @@ Estef Vazquez
 </table>
 </div>
 </div>
-</div>
-<div id="analysis-of-immune-cell-types-by-ulceration-status"
-class="section level3">
-<h3>Analysis of Immune Cell Types by Ulceration Status</h3>
 </div>
 <div id="plasma-cells" class="section level3">
 <h3>Plasma Cells</h3>
@@ -979,8 +992,9 @@ Estef Vazquez
 </table>
 </div>
 </div>
-<div id="eosinophils" class="section level4">
-<h4>Eosinophils</h4>
+</div>
+<div id="eosinophils" class="section level3">
+<h3>Eosinophils</h3>
 <pre class="r"><code>eosinophils_data &lt;- prepare_cell_data(ciber_with_groups, &quot;Eosinophils&quot;)
 
 plot_cell_boxplot(
@@ -1028,8 +1042,8 @@ Estef Vazquez
 </div>
 </div>
 </div>
-<div id="macrophages-m0" class="section level4">
-<h4>Macrophages M0</h4>
+<div id="macrophages-m0" class="section level3">
+<h3>Macrophages M0</h3>
 <pre class="r"><code>macrophages_m0_data &lt;- prepare_cell_data(ciber_with_groups, &quot;Macrophages_M0&quot;)
 
 plot_cell_boxplot(
@@ -1074,7 +1088,6 @@ Estef Vazquez
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 </div>
