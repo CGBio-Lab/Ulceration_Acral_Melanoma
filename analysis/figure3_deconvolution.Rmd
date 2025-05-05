@@ -25,12 +25,11 @@ source("code/check_data.R")
 ```
 
 
-# Immune Cell Type Composition Analysis 
+# Immune Cell Type Composition  
 
 ## Loading Libraries and Data
 
 ```{r load-libraries-data}
-# Load required libraries
 library(tidyverse)
 library(ggplot2)
 library(forcats)
@@ -52,39 +51,35 @@ ciber_gath <- ciber_with_groups %>%
     values_to = "proportion"
   )
 
-# Order cells by proportion
+# Order by proportion
 ciber_gath <- ciber_gath %>% mutate(cell_type = fct_reorder(cell_type, proportion))
 
-# Order by plasma cell proportion within each group
 sample_order <- ciber_gath %>%
   filter(cell_type == "Plasma_cells") %>%
   arrange(ulceration, proportion) %>%
   pull(sample_id)
 
-# Set sample_id as factor with the new order
 ciber_ordered <- ciber_gath %>%
   mutate(sample_id = factor(sample_id, levels = sample_order))
 
 
 ```
 
-##Color Palettes 
 
 ```{r define-colors-themes}
-# Color palette for cell types 
+# Color palette 
 immune_palette <- c(
   '#00441B', '#f29175', 'brown', '#B299A7', 'blue', 'lightblue', 'olivedrab', 'orange', 
   '#3F007D', '#8DA0CB', '#CC0066', "#CB181D", '#74a9cf', 'pink', 'deeppink4', 'cadetblue1',
   '#241178', '#66C2A5', "#E78AC3", "#FFD92F", "#CA9E78", "#3F007D"
 )
 
-# Define colors
+# Define colors and theme
 ulceration_colors <- list(
   fill = c("0" = "#730769", "1" = "#E8CC03"), 
   point = c("0" = "#4A044E", "1" = "#938202")  
 )
 
-# Set theme
 publication_theme <- theme_minimal() +
   theme(
     plot.title = element_text(size = 14, face = "bold", hjust = 0.5, margin = margin(b = 20)),
@@ -102,16 +97,16 @@ publication_theme <- theme_minimal() +
 ## Data Preparation 
 
 ```{r define-data-functions}
-# Transform wide data to long format
+
+# Wide to long format
 prepare_long_format <- function(data) {
-  # Check if data already contains cell_type and proportion columns
+  # Check if data contains required columns
   if("cell_type" %in% colnames(data) && "proportion" %in% colnames(data)) {
-    return(data)  # Already in long format
+    return(data)  
   }
   
-  # Check if ulceration column exists
   if("ulceration" %in% colnames(data)) {
-    # Transform wide to long, preserving ulceration
+    # Wide to long preserving ulceration
     data %>% pivot_longer(
       cols = -c(sample_id, ulceration),
       names_to = "cell_type",
@@ -127,34 +122,31 @@ prepare_long_format <- function(data) {
   }
 }
 
+
 # Order samples by cell type proportion
 order_samples <- function(data, order_by_cell = "Plasma_cells", group_by = NULL) {
-  # Ensure data is in long format
   data_long <- prepare_long_format(data)
-  
   # Filter for specified cell type
   cell_data <- data_long %>% filter(cell_type == order_by_cell)
   
-  # Order samples differently based on whether grouping is needed
+  # Order samples 
   if(!is.null(group_by) && group_by %in% colnames(data_long)) {
-    # Order within groups
+    #  within groups
     sample_order <- cell_data %>%
       arrange(!!sym(group_by), proportion) %>%
       pull(sample_id)
   } else {
-    # Order overall
+    #  overall
     sample_order <- cell_data %>%
       arrange(proportion) %>%
       pull(sample_id)
   }
   
-  # Return the original data with ordered sample_id
   data_long %>% mutate(sample_id = factor(sample_id, levels = sample_order))
 }
 
-# Function to prepare data for comparison of single cell types
+# Prepare data for comparison of cell types
 prepare_cell_data <- function(data, cell_column) {
-  # Select only required columns
   data %>% 
     select(sample_id, !!sym(cell_column), ulceration) %>%
     gather(key = "cell_type", value = "proportion", -sample_id, -ulceration)
@@ -164,9 +156,9 @@ prepare_cell_data <- function(data, cell_column) {
 ## Plotting 
 
 ```{r define-plotting-functions}
-# Function to create grouped stacked barplot by ulceration status
+
+# Grouped stacked barplot by ulceration 
 plot_grouped_barplot <- function(data, title = "Immune Cell Composition by Ulceration Status") {
-  # Ensure data is in long format and ordered
   if(!("ulceration" %in% colnames(data))) {
     stop("Data must contain 'ulceration' column for grouped barplot")
   }
@@ -194,14 +186,14 @@ plot_grouped_barplot <- function(data, title = "Immune Cell Composition by Ulcer
       legend.text = element_text(size = 9),
       panel.grid.major.x = element_blank(),
       panel.grid.minor = element_blank(),
-      strip.text = element_text(size = 12, face = "bold"),  # Group label formatting
+      strip.text = element_text(size = 12, face = "bold"), 
       strip.background = element_rect(fill = "white"),    
-      panel.spacing = unit(1, "lines")                      # Space between groups
+      panel.spacing = unit(1, "lines")                      
     )
 }
 
 
-# Comparative boxplot for cell types
+# Boxplot
 plot_cell_boxplot <- function(
   data, 
   cell_name,
@@ -218,13 +210,11 @@ plot_cell_boxplot <- function(
   stat_pos <- y_max * 0.8
   
   ggplot(data, aes(x = cell_type, y = proportion, fill = ulceration)) +
-    # Boxplot layer
     geom_boxplot(
       outlier.shape = NA,
       width = 0.5,
       alpha = 0.8
     ) +
-    # Points layer with jitter
     geom_point(
       aes(color = ulceration),
       size = 2,
@@ -235,7 +225,6 @@ plot_cell_boxplot <- function(
         seed = 123
       )
     ) +
-    # Colors
     scale_fill_manual(
       values = ulceration_colors$fill,
       name = "Ulceration Status",
@@ -245,14 +234,12 @@ plot_cell_boxplot <- function(
       values = ulceration_colors$point,
       guide = "none"
     ) +
-    # Y-axis 
     scale_y_continuous(
       limits = c(0, y_max),
       breaks = seq(0, y_max, by = y_increment),
       labels = scales::number_format(accuracy = 0.01),
       expand = expansion(mult = c(0.05, 0.1))
     ) +
-    # Statistical test
     stat_compare_means(
       aes(group = ulceration),
       label.y = stat_pos,
@@ -260,20 +247,18 @@ plot_cell_boxplot <- function(
       label = "p.format",
       label.x.npc = "center"
     ) +
-    # Labels
     labs(
       title = paste0(cell_name, " in Acral Melanoma"),
       y = "Cell Proportion (CIBERSORTx)",
       caption = "Statistical test: Wilcoxon rank-sum test"
     ) +
-    # Apply theme
     publication_theme +
     theme(axis.text.x = element_text(angle = 0, hjust = 0.5))
 }
 
 ```
 
-## Analysis and Visualization
+## Visualization
 
 ### Immune Cell Composition by Ulceration Status
 
@@ -284,8 +269,6 @@ plot_grouped_barplot(
   title = "Immune Cell Composition by Ulceration Status in Acral Melanoma"
 )
 ```
-
-### Analysis of Immune Cell Types by Ulceration Status
 
 ### Plasma Cells 
 
@@ -300,7 +283,7 @@ plot_cell_boxplot(
 )
 ```
 
-#### Eosinophils
+### Eosinophils
 
 ```{r eosinophils-analysis, fig.height=7, fig.width=9}
 eosinophils_data <- prepare_cell_data(ciber_with_groups, "Eosinophils")
@@ -313,7 +296,7 @@ plot_cell_boxplot(
 )
 ```
 
-#### Macrophages M0
+### Macrophages M0
 
 ```{r macrophages-m0-analysis, fig.height=7, fig.width=9}
 macrophages_m0_data <- prepare_cell_data(ciber_with_groups, "Macrophages_M0")
