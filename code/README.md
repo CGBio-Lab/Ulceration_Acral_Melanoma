@@ -1,3 +1,1 @@
-# Code
-
-Save command-line scripts and shared R code here.
+# Code to download input data.
